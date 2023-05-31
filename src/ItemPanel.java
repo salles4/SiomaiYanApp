@@ -1,5 +1,7 @@
 
 
+import templates.imageBG;
+import templates.gradientBG;
 import java.awt.Color;
 
 /*

@@ -1,4 +1,5 @@
 
+import templates.ImageTemplate;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

@@ -1,4 +1,7 @@
 
+import templates.ImageTemplateNoSclr;
+import templates.ImageTemplate;
+import templates.gradientBG;
 import javax.swing.JOptionPane;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.awt.event.ActionEvent;

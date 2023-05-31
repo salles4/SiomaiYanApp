@@ -1,4 +1,5 @@
 
+import templates.ImageTemplate;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
