@@ -1,7 +1,4 @@
 
-
-import templates.imageBG;
-import templates.gradientBG;
 import java.awt.Color;
 
 /*
@@ -20,13 +17,16 @@ public class ItemPanel extends javax.swing.JPanel {
      */
     int stock = 0;
     int id;
+    double warn = 0;
     public ItemPanel() {
         initComponents();
     }
+    //data[] = ID, Name, Stocks, Price,
     public ItemPanel(String[] data) {
         initComponents();
         this.stock = Integer.parseInt(data[2]);
         this.id = Integer.parseInt(data[0]);
+        warn = Double.parseDouble(data[4]);
         setBG();
         stockLabel.setText("Stock: "+ stock);
         prodName.setText(data[1]);
@@ -36,12 +36,13 @@ public class ItemPanel extends javax.swing.JPanel {
         }else{
             priceLabel.setText("");
         }
+        minStock.setText("Warning at: "+data[4]);
         
     }
     private void setBG(){
-        if(stock < 0){
+        if(stock < warn){ //2 <20
             gradientBG.changeColor(new Color(0xff5555));
-        }else if(stock>0){
+        }else if(stock>warn){// 2 > 20
             gradientBG.changeColor(Color.green);
         }
     }
@@ -54,8 +55,8 @@ public class ItemPanel extends javax.swing.JPanel {
         stockLabel = new javax.swing.JLabel();
         prodName = new javax.swing.JLabel();
         prodID = new javax.swing.JLabel();
-        imageBG1 = new imageBG("src/blu.jpg");
         priceLabel = new javax.swing.JLabel();
+        minStock = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -91,7 +92,7 @@ public class ItemPanel extends javax.swing.JPanel {
             }
         });
 
-        stockLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        stockLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         stockLabel.setText("Stock:");
         stockLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -101,54 +102,54 @@ public class ItemPanel extends javax.swing.JPanel {
         prodID.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         prodID.setText("ID#123123");
 
-        javax.swing.GroupLayout imageBG1Layout = new javax.swing.GroupLayout(imageBG1);
-        imageBG1.setLayout(imageBG1Layout);
-        imageBG1Layout.setHorizontalGroup(
-            imageBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
-        );
-        imageBG1Layout.setVerticalGroup(
-            imageBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        priceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        priceLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         priceLabel.setText("₱");
         priceLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        minStock.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        minStock.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        minStock.setText("Warning at:");
+        minStock.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout gradientBGLayout = new javax.swing.GroupLayout(gradientBG);
         gradientBG.setLayout(gradientBGLayout);
         gradientBGLayout.setHorizontalGroup(
             gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBGLayout.createSequentialGroup()
-                .addComponent(imageBG1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(75, 75, 75)
                 .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(prodName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(gradientBGLayout.createSequentialGroup()
                         .addComponent(prodID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 49, Short.MAX_VALUE)))
+                        .addGap(0, 43, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(minStock, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                    .addComponent(stockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         gradientBGLayout.setVerticalGroup(
             gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gradientBGLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBGLayout.createSequentialGroup()
                 .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(stockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(imageBG1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(gradientBGLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(prodName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 0, 0)
                         .addComponent(prodID))
-                    .addComponent(priceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(gradientBGLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(gradientBGLayout.createSequentialGroup()
+                                .addComponent(stockLabel)
+                                .addGap(0, 0, 0)
+                                .addComponent(minStock)))))
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -159,7 +160,7 @@ public class ItemPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gradientBG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(gradientBG, javax.swing.GroupLayout.PREFERRED_SIZE, 46, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     private void createDetailsFrame(){
@@ -197,8 +198,8 @@ public class ItemPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gradientBG gradientBG;
-    private imageBG imageBG1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel minStock;
     private javax.swing.JLabel priceLabel;
     private javax.swing.JLabel prodID;
     private javax.swing.JLabel prodName;

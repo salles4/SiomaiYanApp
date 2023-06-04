@@ -26,16 +26,21 @@ public class SQLiteJava {
         }
     }
 
+    public static Connection ConnDatabase() {
+        ConnectDatabase();
+        return conn;
+    }
+
     //adds data from database to the given arrayList
-    public static void SQLiteRS(String command, ArrayList array) {
-        array.clear();
+    public static void SQLiteRS(String command, ArrayList AccountArray) {
+        AccountArray.clear();
         try (Statement statement = conn.createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visible = 1");
             if (rs.next()) {
                 do {
                     String[] row = {rs.getString("id"), rs.getString("name"),
                         rs.getString("password")};
-                    array.add(row);
+                    AccountArray.add(row);
                 } while (rs.next());
             } else {
                 System.out.println("Empty Data");
@@ -54,7 +59,7 @@ public class SQLiteJava {
             if (rs.next()) {
                 do {
                     String[] row = {rs.getString("id"), rs.getString("name"),
-                        rs.getString("password")};
+                        rs.getString("amount"), rs.getString("price"), rs.getString("min_stock")};
                     panel.add(new ItemPanel(row));
                 } while (rs.next());
             } else {
@@ -102,9 +107,10 @@ public class SQLiteJava {
         }
         return false;
     }
+
     public static boolean SQLiteCheckIfInDatabase(String command, String value) {
         try (PreparedStatement userCheck = conn.prepareStatement(command)) {
-                userCheck.setString(1, value);
+            userCheck.setString(1, value);
             ResultSet rsUser = userCheck.executeQuery();
             return rsUser.next();
         } catch (SQLException ex) {

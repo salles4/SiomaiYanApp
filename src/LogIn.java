@@ -1,7 +1,4 @@
 
-import templates.ImageTemplateNoSclr;
-import templates.ImageTemplate;
-import templates.gradientBG;
 import javax.swing.JOptionPane;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.awt.event.ActionEvent;
@@ -82,7 +79,7 @@ public class LogIn extends javax.swing.JFrame {
                 jProgressBar1.setVisible(false);
                 jProgressBar1.setValue(0);
                 jProgressBar1.setString("Done!");
-                new MainFrame().setVisible(true);
+                new MainJFrame().setVisible(true);
                 dispose();
             }
         }
