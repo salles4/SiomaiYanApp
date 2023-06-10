@@ -42,6 +42,8 @@ public class ItemPanel extends javax.swing.JPanel {
     private void setBG(){
         if(stock < warn){ //2 <20
             gradientBG.changeColor(new Color(0xff5555));
+            stockLabel.setForeground(Color.red);
+            stockLabel.setFont(new java.awt.Font(stockLabel.getFont().getFontName(), java.awt.Font.BOLD, stockLabel.getFont().getSize()));
         }else if(stock>warn){// 2 > 20
             gradientBG.changeColor(Color.green);
         }
@@ -160,11 +162,12 @@ public class ItemPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gradientBG, javax.swing.GroupLayout.PREFERRED_SIZE, 46, Short.MAX_VALUE)
+            .addComponent(gradientBG, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
     private void createDetailsFrame(){
         DetailsPage details = new DetailsPage();
+        details.setLocationRelativeTo(this);
         details.setVisible(true);
         details.stockAmt = stock;
         details.productName = prodName.getText();

@@ -32,12 +32,12 @@ public class LogIn extends javax.swing.JFrame {
         String user = userF.getText();
         String pass = String.valueOf(passF.getPassword());
         if (user.isBlank() || pass.isBlank()) { // checks if blank fields
-            JOptionPane.showMessageDialog(null, "Fill all fields",
+            JOptionPane.showMessageDialog(this, "Fill all fields",
                     "", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if (user.equals("sallesfe") && pass.equals("qwerty123")) { // checks if admin
-            JOptionPane.showMessageDialog(null, "Log In Successful");
+            JOptionPane.showMessageDialog(this, "Log In Successful");
             accDetails.username = user;
             accDetails.admin = true;
             jProgressBar1.setVisible(true);
@@ -45,27 +45,27 @@ public class LogIn extends javax.swing.JFrame {
             return;
         }
         if (SQLiteJava.SQLiteLogIn(user, pass)) { // checks database
-            JOptionPane.showMessageDialog(null, "Log In Successful");
+            JOptionPane.showMessageDialog(this, "Log In Successful");
             jProgressBar1.setVisible(true);
             timer.start();
             return;
         }
         attempts = attempts - 1;
         if (attempts == 0) {
-            JOptionPane.showMessageDialog(null,
+            JOptionPane.showMessageDialog(this,
                     "Ran out of attempts!!");
             passF.setEditable(false);
             userF.setEditable(false);
             login.setEnabled(false);
         } else {
-            JOptionPane.showMessageDialog(null, "Wrong Credentials",
+            JOptionPane.showMessageDialog(this, "Wrong Credentials",
                     "Attempts Left: " + attempts, JOptionPane.WARNING_MESSAGE);
             passF.setText(null);
             userF.setText(null);
         }
 
     }
-
+    javax.swing.JFrame j = this;
     public class prog implements ActionListener {
 
         @Override
@@ -79,7 +79,9 @@ public class LogIn extends javax.swing.JFrame {
                 jProgressBar1.setVisible(false);
                 jProgressBar1.setValue(0);
                 jProgressBar1.setString("Done!");
-                new MainJFrame().setVisible(true);
+                MainJFrame m = new MainJFrame();
+                m.setVisible(true);
+                m.setLocationRelativeTo(j);
                 dispose();
             }
         }
@@ -126,6 +128,7 @@ public class LogIn extends javax.swing.JFrame {
 
         login.setText("Log In");
         login.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        login.setFocusable(false);
         login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginActionPerformed(evt);
@@ -238,8 +241,8 @@ public class LogIn extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(58, Short.MAX_VALUE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         gradientBG2Layout.setVerticalGroup(
             gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +251,7 @@ public class LogIn extends javax.swing.JFrame {
                 .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );

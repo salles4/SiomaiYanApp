@@ -62,6 +62,7 @@ public class DetailsPage extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Account Details"));
 
@@ -192,10 +193,10 @@ public class DetailsPage extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Control Panel"));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Rename");
         jButton1.setFocusable(false);
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Edit");
         jButton2.setFocusable(false);
 
         jButton3.setText("jButton3");
@@ -204,7 +205,7 @@ public class DetailsPage extends javax.swing.JFrame {
         jButton4.setText("jButton4");
         jButton4.setFocusable(false);
 
-        jButton5.setText("jButton5");
+        jButton5.setText("Remove");
         jButton5.setFocusable(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);

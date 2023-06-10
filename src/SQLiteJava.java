@@ -38,7 +38,7 @@ public class SQLiteJava {
             ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visible = 1");
             if (rs.next()) {
                 do {
-                    String[] row = {rs.getString("id"), rs.getString("name"),
+                    String[] row = {rs.getString("id"), rs.getString("user"),
                         rs.getString("password")};
                     AccountArray.add(row);
                 } while (rs.next());
@@ -50,6 +50,29 @@ public class SQLiteJava {
             showError(e);
         }
     }
+    //adds data from database to the given arrayList
+    public static void SQLiteRS(String command, ArrayList AccountArray, String[] dataToGet) {
+        AccountArray.clear();
+        try (Statement statement = conn.createStatement()) {
+            ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visible = 1");
+            if (rs.next()) {
+                do {
+                    String[] row = new String[dataToGet.length];
+                    for (int i = 0; i < dataToGet.length; i++){
+                        row[i] = rs.getString(dataToGet[i]);
+                    }
+                    
+                    AccountArray.add(row);
+                } while (rs.next());
+            } else {
+                System.out.println("Empty Data");
+            }
+            System.out.println("Data Listed.");
+        } catch (SQLException e) {
+            showError(e);
+        }
+    }
+    
 
     //adds the data from database to the given panel
     public static void SQLiteRS(String command, javax.swing.JPanel panel) {
@@ -107,7 +130,7 @@ public class SQLiteJava {
         }
         return false;
     }
-
+    //SQLiteCheckIfInDatabase("select * from acc where user = ?", username) returns true if database contain value
     public static boolean SQLiteCheckIfInDatabase(String command, String value) {
         try (PreparedStatement userCheck = conn.prepareStatement(command)) {
             userCheck.setString(1, value);
@@ -122,14 +145,15 @@ public class SQLiteJava {
     public static boolean SQLiteLogIn(String user, String pass) {
         boolean haveAcc = false;
         try (PreparedStatement credCheck = conn.prepareStatement("select * from accounts where "
-                + "name=? and password=? and visible = 1")) {
+                + "user=? and password=? and visible = 1")) {
             credCheck.setString(1, user);
             credCheck.setString(2, pass);
             ResultSet rs = credCheck.executeQuery();
             if (rs.next()) {
                 haveAcc = true;
-                accDetails.username = rs.getString("name");
+                accDetails.username = rs.getString("user");
                 accDetails.accnumber = rs.getString("id");
+                accDetails.name = rs.getString("name");
                 accDetails.admin = false;
             }
         } catch (SQLException ex) {
