@@ -44,7 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
                 do {
                     String[] row = {rs.getString("id"), rs.getString("name"),
                         rs.getString("amount"), rs.getString("price")};
-                    ScrollPanel.add(new ItemPanel(row));
+                    //ScrollPanel.add(new ItemPanel(row));
                     model.addRow(row);
                 } while (rs.next());
             } else {

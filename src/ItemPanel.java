@@ -1,20 +1,8 @@
 
 import java.awt.Color;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-
-/**
- *
- * @author Salles
- */
 public class ItemPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ItemPanel
-     */
+    ProductsPanel ProductPanel;
     int stock = 0;
     int id;
     double warn = 0;
@@ -22,8 +10,9 @@ public class ItemPanel extends javax.swing.JPanel {
         initComponents();
     }
     //data[] = ID, Name, Stocks, Price,
-    public ItemPanel(String[] data) {
+    public ItemPanel(String[] data, ProductsPanel ProductPanel) {
         initComponents();
+        this.ProductPanel = ProductPanel;
         this.stock = Integer.parseInt(data[2]);
         this.id = Integer.parseInt(data[0]);
         warn = Double.parseDouble(data[4]);
@@ -166,13 +155,17 @@ public class ItemPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void createDetailsFrame(){
-        DetailsPage details = new DetailsPage();
+        ProductPanel.ScrollPanel.removeAll();
+        ProductPanel.ScrollPanel.add(new DetailsPanel(ProductPanel,id));
+        ProductPanel.ScrollPanel.revalidate();
+        ProductPanel.ScrollPanel.repaint();
+        /*
         details.setLocationRelativeTo(this);
         details.setVisible(true);
         details.stockAmt = stock;
         details.productName = prodName.getText();
         details.setTitle("Product: " + prodName.getText());
-        details.setProductDetails();
+        details.setProductDetails();*/
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         createDetailsFrame();

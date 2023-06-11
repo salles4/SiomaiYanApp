@@ -75,15 +75,15 @@ public class SQLiteJava {
     
 
     //adds the data from database to the given panel
-    public static void SQLiteRS(String command, javax.swing.JPanel panel) {
-        panel.removeAll();
+    public static void SQLiteRS(String command, ProductsPanel panel) {
+        panel.ScrollPanel.removeAll();
         try (Statement statement = conn.createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visible = 1");
             if (rs.next()) {
                 do {
                     String[] row = {rs.getString("id"), rs.getString("name"),
                         rs.getString("amount"), rs.getString("price"), rs.getString("min_stock")};
-                    panel.add(new ItemPanel(row));
+                    panel.ScrollPanel.add(new ItemPanel(row, panel));
                 } while (rs.next());
             } else {
                 System.out.println("Empty Data");
@@ -92,8 +92,8 @@ public class SQLiteJava {
         } catch (SQLException e) {
             showError(e);
         }
-        panel.revalidate();
-        panel.repaint();
+        panel.ScrollPanel.revalidate();
+        panel.ScrollPanel.repaint();
     }
 
     //adds data to database through prepare statement for better security

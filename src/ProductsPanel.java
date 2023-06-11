@@ -21,18 +21,18 @@ public class ProductsPanel extends javax.swing.JPanel {
     }
     final String[] SORTSTRINGS = {"stock_diff", "price", "name", "id"};
     final String[] ORDER = {"asc","desc"};
-    private void ListProducts(){
+    public final void ListProducts(){
         int SortedBy = jComboBox1.getSelectedIndex();
         int ascDesc = jComboBox2.getSelectedIndex();
-        SQLiteJava.SQLiteRS("select * from products order by "+SORTSTRINGS[SortedBy]+" "+ORDER[ascDesc], ScrollPanel);
+        SQLiteJava.SQLiteRS("select * from products order by "+SORTSTRINGS[SortedBy]+" "+ORDER[ascDesc], this);
         
         String searchText = textSearchField.getText().toLowerCase().strip();
         if(!searchText.isEmpty()){
             SQLiteJava.SQLiteRS("SELECT * FROM products WHERE LOWER(name) LIKE '" + searchText + "%' OR "
                     + "LOWER(name) LIKE '%" + searchText + "%' ORDER BY CASE WHEN LOWER(name) LIKE '"
-                            + searchText +"%' THEN 0 ELSE 1 END, "+SORTSTRINGS[SortedBy]+" "+ORDER[ascDesc] , ScrollPanel);
+                            + searchText +"%' THEN 0 ELSE 1 END, "+SORTSTRINGS[SortedBy]+" "+ORDER[ascDesc] , this);
         }else{
-            SQLiteJava.SQLiteRS("select * from products order by "+SORTSTRINGS[SortedBy]+" "+ORDER[ascDesc], ScrollPanel);
+            SQLiteJava.SQLiteRS("select * from products order by "+SORTSTRINGS[SortedBy]+" "+ORDER[ascDesc], this);
         }
     }
 
@@ -155,7 +155,7 @@ public class ProductsPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ScrollPane))
                 .addContainerGap())
@@ -178,7 +178,7 @@ public class ProductsPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPane;
-    private javax.swing.JPanel ScrollPanel;
+    public javax.swing.JPanel ScrollPanel;
     private ImageTemplate imageTemplate1;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;

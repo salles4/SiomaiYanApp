@@ -25,6 +25,31 @@ public class AccountsPanel extends javax.swing.JPanel {
         }
     }
 
+    private void warning(String message) {
+        JOptionPane.showMessageDialog(this, message, "", JOptionPane.WARNING_MESSAGE);
+    }
+
+    // 0user, 1pass, 2repass, 3num, 4name
+    private boolean verifyFields(String[] fields) {
+        if (fields[0].isBlank() || fields[1].isBlank() || fields[2].isBlank() || fields[3].isBlank() || fields[4].isBlank()) {
+            warning("Fill all fields.");
+            return false;
+        }
+        if (!fields[1].equals(fields[2])) {
+            warning("Password do not match!");
+            return false;
+        }
+        if (SQLiteJava.SQLiteCheckIfInDatabase("select * from accounts where user=? and visible=1", fields[0])) {
+            warning("Username already exist\nPlease choose another.");
+            return false;
+        }
+        if (fields[3].length() < 11 || !fields[3].startsWith("09")) {
+            warning("Phone number is invalid");
+            return false;
+        }
+        return true;
+    }
+
     //unique id generator
     String GenerateID() {
         int randomNums = new java.util.Random().nextInt(10000, 99999);
@@ -50,18 +75,18 @@ public class AccountsPanel extends javax.swing.JPanel {
         button_save = new javax.swing.JButton();
         button_add = new javax.swing.JButton();
         button_edit = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        userField = new javax.swing.JTextField();
         IDField = new javax.swing.JLabel();
-        passField = new javax.swing.JPasswordField();
-        repassField = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         numField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        userField = new javax.swing.JTextField();
+        passField = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        repassField = new javax.swing.JPasswordField();
         imageTemplate1 = new ImageTemplate();
         jLabel5 = new javax.swing.JLabel();
 
@@ -138,19 +163,7 @@ public class AccountsPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setText("Re-Type Password:");
-
-        jLabel3.setText("Password:");
-
-        jLabel2.setText("Username:");
-
         jLabel1.setText("ID: ");
-
-        userField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                userFieldKeyReleased(evt);
-            }
-        });
 
         IDField.setText(IDPREFIX);
 
@@ -168,7 +181,22 @@ public class AccountsPanel extends javax.swing.JPanel {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 numFieldKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                numFieldKeyTyped(evt);
+            }
         });
+
+        jLabel2.setText("Username:");
+
+        userField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                userFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel3.setText("Password:");
+
+        jLabel4.setText("Re-Type Password:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -181,39 +209,38 @@ public class AccountsPanel extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addGap(112, 112, 112)
                         .addComponent(IDField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(button_add, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(button_del, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(61, 61, 61)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(button_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(button_save, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(20, 20, 20))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel2))
-                                    .addGap(30, 30, 30)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(repassField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel7))
-                                    .addGap(46, 46, 46)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(numField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(button_add, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(button_del, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(button_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_save, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(46, 46, 46)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(repassField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {nameField, numField, passField, repassField, userField});
@@ -226,14 +253,6 @@ public class AccountsPanel extends javax.swing.JPanel {
                     .addComponent(IDField))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(numField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -244,6 +263,14 @@ public class AccountsPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(repassField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(numField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(button_add)
@@ -286,7 +313,7 @@ public class AccountsPanel extends javax.swing.JPanel {
                         .addComponent(jLabel5)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -306,7 +333,7 @@ public class AccountsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -339,7 +366,7 @@ public class AccountsPanel extends javax.swing.JPanel {
         String SelectedPass = jTable1.getValueAt(SelectedRow, 4).toString();
         String SelectedName = jTable1.getValueAt(SelectedRow, 1).toString();
         String SelectedNumber = jTable1.getValueAt(SelectedRow, 2).toString();
-        
+
         IDField.setText(SelectedID);
         userField.setText(SelectedUser);
         passField.setText(SelectedPass);
@@ -352,25 +379,20 @@ public class AccountsPanel extends javax.swing.JPanel {
         String user = userField.getText();
         String pass = String.valueOf(passField.getPassword());
         String repass = String.valueOf(repassField.getPassword());
-        if (SQLiteJava.SQLiteCheckIfInDatabase("select * from accounts where user=? and visible=1", user)) {
-            JOptionPane.showMessageDialog(this, "Username already exists,\nPlease choose another.", "", JOptionPane.WARNING_MESSAGE);
-            return;
+        String num = numField.getText();
+        String name = nameField.getText();
+        // 0user, 1pass, 2repass, 3num, 4name
+        String verify[] = {user, pass, repass, num, name};
+        if (verifyFields(verify)) {
+            String setData[] = {id, user, pass, num, name};
+            SQLiteJava.SQLitePrepare("insert into accounts (id, user, password, contact, name) values (?,?,?,?,?)", setData);
+            passField.setText("");
+            repassField.setText("");
+            userField.setText("");
+            IDField.setText(IDPREFIX);
+            JOptionPane.showMessageDialog(this, "Successfully Added!");
         }
-        if (!user.isBlank() && !pass.isBlank() && !repass.isBlank()) {
-            if (pass.equals(repass)) {
-                String setData[] = {id, user, pass};
-                SQLiteJava.SQLitePrepare("insert into accounts (id, user, password) values (?,?,?)", setData);
-                passField.setText("");
-                repassField.setText("");
-                userField.setText("");
-                IDField.setText(IDPREFIX);
-                JOptionPane.showMessageDialog(this, "Successfully Added!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Password Does not match", "", JOptionPane.WARNING_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Fill all fields", "", JOptionPane.WARNING_MESSAGE);
-        }
+
         ListToTable();
     }//GEN-LAST:event_button_addActionPerformed
 
@@ -394,13 +416,15 @@ public class AccountsPanel extends javax.swing.JPanel {
             }
         } else {
             if (userField.getText().isBlank()) {
+                IDField.setText(IDPREFIX);
                 if (button_save.isEnabled()) {
                     button_save.setEnabled(false);
                     button_add.setEnabled(true);
                     passField.setText("");
                     repassField.setText("");
+                    numField.setText("");
+                    nameField.setText("");
                 }
-                IDField.setText("2023 -");
             }
         }
     }//GEN-LAST:event_userFieldKeyReleased
@@ -410,22 +434,23 @@ public class AccountsPanel extends javax.swing.JPanel {
         String user = userField.getText();
         String pass = String.valueOf(passField.getPassword());
         String repass = String.valueOf(repassField.getPassword());
-        if (user.isBlank() || pass.isBlank() || repass.isBlank()) {
+        String num = numField.getText();
+        String name = nameField.getText();
+        if (user.isBlank() || pass.isBlank() || repass.isBlank() || num.isBlank() || name.isBlank()) {
             JOptionPane.showMessageDialog(this, "Fill all fields", "", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (SQLiteJava.SQLiteCheckIfInDatabase("select * from accounts where user = ?", user)) {
-            JOptionPane.showMessageDialog(this, "Username already exist", "", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+
         if (pass.equals(repass)) {
-            String setData[] = {user, pass};
+            String setData[] = {user, pass, num, name};
             SQLiteJava.SQLitePrepare("update accounts set user = ?, password = ? where id = '" + id + "'", setData);
             button_add.setEnabled(true);
             button_save.setEnabled(false);
             passField.setText("");
             repassField.setText("");
             userField.setText("");
+            numField.setText("");
+            nameField.setText("");
             IDField.setText(IDPREFIX);
             JOptionPane.showMessageDialog(this, "Successfully Updated!");
         } else {
@@ -441,6 +466,17 @@ public class AccountsPanel extends javax.swing.JPanel {
     private void numFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numFieldKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_numFieldKeyReleased
+
+    private void numFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numFieldKeyTyped
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9')
+                || (c == java.awt.event.KeyEvent.VK_BACK_SPACE)
+                || (c == java.awt.event.KeyEvent.VK_DELETE))
+                || numField.getText().length() >= 11) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_numFieldKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
