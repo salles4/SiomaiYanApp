@@ -21,11 +21,11 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        gradientBG1.setBackground(new java.awt.Color(0, 0, 0));
-        gradientBG1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        gradientBG1.setForeground(new java.awt.Color(255, 255, 255));
+        gradientBG1.setBackground(new java.awt.Color(153, 153, 153));
+        gradientBG1.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Placeholder Label");
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
@@ -50,7 +50,7 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
             .addGroup(gradientBG1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)

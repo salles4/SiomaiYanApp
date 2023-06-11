@@ -46,6 +46,7 @@ public class MainJFrame extends javax.swing.JFrame {
         minExit = new ImageTemplate();
         minExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         min = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Siomai Yan!! App");
@@ -106,9 +107,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(153, 153, 153));
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jButton2.setText("Suppliers");
+        jButton2.setFocusable(false);
 
         jButton3.setBackground(new java.awt.Color(153, 153, 153));
         jButton3.setText("Logs");
+        jButton3.setFocusable(false);
 
         javax.swing.GroupLayout gradientBG1Layout = new javax.swing.GroupLayout(gradientBG1);
         gradientBG1.setLayout(gradientBG1Layout);
@@ -173,7 +176,7 @@ public class MainJFrame extends javax.swing.JFrame {
         imageTemplate2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/topPanel2.jpg"))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
-        jLabel1.setText("Welcome, Francis!");
+        jLabel1.setText("Salles, Francis James E.");
 
         minExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/min_exit/stay_MinExit.png"))); // NOI18N
         minExit.setPreferredSize(new java.awt.Dimension(60, 30));
@@ -186,6 +189,9 @@ public class MainJFrame extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 minExitMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                minExitMousePressed(evt);
             }
         });
 
@@ -201,17 +207,20 @@ public class MainJFrame extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 minMouseExited(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                minMousePressed(evt);
+            }
         });
 
         javax.swing.GroupLayout minLayout = new javax.swing.GroupLayout(min);
         min.setLayout(minLayout);
         minLayout.setHorizontalGroup(
             minLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGap(0, 41, Short.MAX_VALUE)
         );
         minLayout.setVerticalGroup(
             minLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGap(0, 41, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout minExitLayout = new javax.swing.GroupLayout(minExit);
@@ -220,35 +229,40 @@ public class MainJFrame extends javax.swing.JFrame {
             minExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(minExitLayout.createSequentialGroup()
                 .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addGap(0, 41, Short.MAX_VALUE))
         );
         minExitLayout.setVerticalGroup(
             minExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(minExitLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(min, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Admin");
 
         javax.swing.GroupLayout imageTemplate2Layout = new javax.swing.GroupLayout(imageTemplate2);
         imageTemplate2.setLayout(imageTemplate2Layout);
         imageTemplate2Layout.setHorizontalGroup(
             imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageTemplate2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74)
+                .addGroup(imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(minExit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(minExit, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
         imageTemplate2Layout.setVerticalGroup(
             imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageTemplate2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(imageTemplate2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(minExit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(minExit, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(imageTemplate2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel2)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,6 +344,14 @@ public class MainJFrame extends javax.swing.JFrame {
         setState(MainJFrame.ICONIFIED);
     }//GEN-LAST:event_minMouseClicked
 
+    private void minExitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minExitMousePressed
+        minExit.setIcon(makeIcon("pressed_Exit.png"));
+    }//GEN-LAST:event_minExitMousePressed
+
+    private void minMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minMousePressed
+        minExit.setIcon(makeIcon("pressed_Min.png"));
+    }//GEN-LAST:event_minMousePressed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -365,6 +387,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel min;
     private ImageTemplate minExit;
     private javax.swing.JButton tab1;

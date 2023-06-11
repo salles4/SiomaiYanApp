@@ -28,13 +28,12 @@ public class CartPanel extends javax.swing.JPanel {
         //List all unsaved in supply list
         if (!unsavedArray.isEmpty()) {
             ScrollPanelLabel unsaved = new ScrollPanelLabel(this);
-            unsaved.jLabel1.setText("Unsaved Changes:");
+            unsaved.jLabel1.setText("Unsaved Cart 1 Changes:");
             SuppliesPanel.add(unsaved);
             ctr = 0;
             for (String[] i : unsavedArray) {
                 ctr++;
-                i[0] = String.valueOf(ctr);
-                SuppliesPanel.add(new CartItemsPanel(i, this, 1));
+                SuppliesPanel.add(new CartItemsPanel(i, this, 1, ctr));
             }
             ScrollPanelLabel supplyList = new ScrollPanelLabel(this);
             supplyList.jLabel1.setText("Supplies:");
@@ -47,16 +46,14 @@ public class CartPanel extends javax.swing.JPanel {
         ctr = 0;
         for (String[] i : cartArray) {
             ctr++;
-            i[0] = String.valueOf(ctr);
-            SuppliesPanel.add(new CartItemsPanel(i, this, 2));
+            SuppliesPanel.add(new CartItemsPanel(i, this, 2, ctr));
         }
         
         //list the inventory in inventory panel
         ctr = 0;
         for (String[] i : inventoryArray) {
             ctr++;
-            i[0] = String.valueOf(ctr);
-            InventoryPanel.add(new CartItemsPanel(i, this, 3));
+            InventoryPanel.add(new CartItemsPanel(i, this, 3, ctr));
         }
 
         InventoryPanel.revalidate();
@@ -92,6 +89,7 @@ public class CartPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1039, 512));
@@ -165,6 +163,7 @@ public class CartPanel extends javax.swing.JPanel {
         jLabel5.setText("Cart Management");
 
         jButton1.setText("Assign Worker");
+        jButton1.setFocusable(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -173,6 +172,9 @@ public class CartPanel extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("No Assigned Worker");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Plate Number: 810DYB");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -183,26 +185,30 @@ public class CartPanel extends javax.swing.JPanel {
                 .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 661, Short.MAX_VALUE)
                         .addComponent(jLabel6))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel7))))
                 .addGap(24, 24, 24))
         );
 
@@ -238,6 +244,7 @@ public class CartPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
