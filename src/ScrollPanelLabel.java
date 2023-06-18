@@ -8,9 +8,6 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
         initComponents();
         this.cartPanel = panel;
     }
-    void setActionListener(java.awt.event.ActionListener listener){
-        jButton1.addActionListener(listener);
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -42,6 +39,11 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
         jButton2.setText("Save");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.setFocusable(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout gradientBG1Layout = new javax.swing.GroupLayout(gradientBG1);
         gradientBG1.setLayout(gradientBG1Layout);
@@ -82,6 +84,29 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
         cartPanel.unsavedArray.clear();
         cartPanel.ListData();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        for (String[] unsavedProduct : cartPanel.unsavedArray){ // id of product, name of product, amount in array
+            int unsavedAmount = Integer.parseInt(unsavedProduct[2]);
+            if (unsavedAmount != 0){
+                SQLiteJava.SQLite("update products set amount = amount - "+unsavedAmount+" where id = " + unsavedProduct[0]);
+                
+                int updated = SQLiteJava.SQLiteExeUpdate("update carts set amount = amount + "+unsavedAmount+
+                        " where cart = "+cartPanel.CARTNUMBER+" and product_id = " + unsavedProduct[0]);
+                System.out.println(updated);
+                if (updated < 1){
+                    String[] toInsert = {unsavedProduct[0], unsavedProduct[2], cartPanel.CARTNUMBER+"" };
+                    SQLiteJava.SQLitePrepare("insert into carts (product_id, amount, cart) values (?,?,?)", toInsert);
+                }
+            }
+        }
+        SQLiteJava.SQLite("delete from carts where amount = 0");
+        cartPanel.unsavedArray.clear();
+        cartPanel.syncDataToList();
+        cartPanel.ListData();
+        cartPanel.repaint();
+        cartPanel.revalidate();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

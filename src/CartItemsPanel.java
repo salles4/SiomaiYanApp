@@ -1,4 +1,5 @@
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 public class CartItemsPanel extends javax.swing.JPanel {
 
@@ -10,7 +11,7 @@ public class CartItemsPanel extends javax.swing.JPanel {
     public CartItemsPanel() {
         initComponents();
     }
-
+    final int UNSAVED_TYPE = 1, SUPPLY_TYPE = 2, INVENTORY_TYPE = 3;
     //data[] = ID, Name, Stocks,
     //!type 1 = unsaved | 2 = supply | 3 = inventory
     public CartItemsPanel(String[] data, CartPanel cartPanel, int type, int num) {
@@ -24,10 +25,10 @@ public class CartItemsPanel extends javax.swing.JPanel {
         prodName.setText(data[1]);
         priceLabel.setText("");
 
-        switch (type) { //type 1 = unsaved | 2 = supply | 3 = inventory
-            case 3 -> initInventory();
-            case 2 -> initCart(); 
-            case 1 -> initUnsaved();
+        switch (type) { 
+            case INVENTORY_TYPE -> initInventory();
+            case SUPPLY_TYPE -> initCart(); 
+            case UNSAVED_TYPE -> initUnsaved();
         }
     }
 
@@ -65,42 +66,87 @@ public class CartItemsPanel extends javax.swing.JPanel {
         gradientBG.setBackground(new Color(0xFF6060));
     }
 
-    private void ClickedFunction() {
-        switch (type) { //type 1 = unsaved | 2 = supply | 3 = inventory
-            case 3 ->
-                inventoryAction();
-            case 2 ->
-                cartAction(); // cart items
-            case 1 ->
-                cartAction(); // unsaved items
+    private void ClickedFunction() { // middle button action
+        switch (type) {
+            case INVENTORY_TYPE -> inventoryAction();
+            case SUPPLY_TYPE -> cartAction();
+            case UNSAVED_TYPE -> inventoryAction(); 
         }
+    }
+    private int getStock(java.util.ArrayList<String[]> list){
+        if (type != UNSAVED_TYPE){
+            return stock;
+        }
+        for (String[] cartProduct : list){
+            if (cartProduct[0].equals(id+"")){
+                return Integer.parseInt(cartProduct[2]);
+            }
+        }
+        return 0;
+    }
+    private String getUnsavedStock(){
+        if (type == UNSAVED_TYPE){
+            return Math.abs(stock)+"";
+        }
+        for (String[] cartProduct : cartPanel.unsavedArray){
+            if (cartProduct[0].equals(id+"")){
+                return cartProduct[2];
+            }
+        }
+        return "";
     }
 
     private void inventoryAction() {
-        String[] data = {String.valueOf(id), prodName.getText(), "1"};
+        //for inputing new amount
+        String[] opt = {"Supply", "Cancel"};
+        int amtToCompare = getStock(cartPanel.inventoryArray);
+        CartInputPanel cartInput = new CartInputPanel(
+                prodName.getText(),amtToCompare,CartInputPanel.FROMINVENTORY);
+        cartInput.AmountTextField.setText(getUnsavedStock());
+        int response = JOptionPane.showOptionDialog(cartPanel, cartInput, "Move to Cart", 
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, opt, -1);
+        if(response != JOptionPane.OK_OPTION){
+            return;
+        }
+        //makes inputted amount to int
+        String amount = cartInput.AmountTextField.getText();
+        
+        //loop through unsaved products to change amount
         for (String[] i : cartPanel.unsavedArray) {
             if (i[0].equals(String.valueOf(id))) {
-                i[2] = String.valueOf(1 + Integer.parseInt(i[2]));
+                i[2] = amount;
                 cartPanel.ListData();
                 return;
             }
         }
+        
+        //if not in unsaved list, add product
+        String[] data = {String.valueOf(id), prodName.getText(), amount+""};
         cartPanel.unsavedArray.add(data);
         cartPanel.ListData();
     }
 
     private void cartAction() {
-        String[] data = {String.valueOf(id), prodName.getText(), "-1"};
+        int amtToCompare = getStock(cartPanel.cartArray);
+        String[] opt = {"Return", "Cancel"};
+        CartInputPanel cartInput = new CartInputPanel(prodName.getText(),amtToCompare,CartInputPanel.FROMCART);
+        cartInput.AmountTextField.setText(getUnsavedStock());
+        int response = JOptionPane.showOptionDialog(cartPanel, cartInput, "Move to Inventory", 
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, opt, -1);
+        
+        if(response != JOptionPane.OK_OPTION){
+            return;
+        }
+        String amount = cartInput.AmountTextField.getText() ;
+
         for (String[] i : cartPanel.unsavedArray) {
             if (i[0].equals(String.valueOf(id))) {
-                i[2] = String.valueOf(Integer.parseInt(i[2]) - 1);
-                if (i[2].equals("0")) {
-                    cartPanel.unsavedArray.remove(i);
-                }
+                i[2] = "-"+amount;
                 cartPanel.ListData();
                 return;
             }
         }
+        String[] data = {String.valueOf(id), prodName.getText(), "-"+amount};
         cartPanel.unsavedArray.add(data);
         cartPanel.ListData();
     }
@@ -157,6 +203,11 @@ public class CartItemsPanel extends javax.swing.JPanel {
         leftButton.setToolTipText("Add Supply");
         leftButton.setBorderPainted(false);
         leftButton.setContentAreaFilled(false);
+        leftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftButtonActionPerformed(evt);
+            }
+        });
         buttons_panel.add(leftButton);
 
         middleButton.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
@@ -202,22 +253,20 @@ public class CartItemsPanel extends javax.swing.JPanel {
                 .addComponent(prodID, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(prodName, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttons_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         gradientBGLayout.setVerticalGroup(
             gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(buttons_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(prodName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(buttons_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(prodName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBGLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(prodID, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                    .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -253,6 +302,9 @@ public class CartItemsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_formMouseExited
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        if(type == UNSAVED_TYPE){
+            return;
+        }
         ClickedFunction();
     }//GEN-LAST:event_formMousePressed
 
@@ -265,6 +317,10 @@ public class CartItemsPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_rightButtonActionPerformed
+
+    private void leftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftButtonActionPerformed
+        cartAction();
+    }//GEN-LAST:event_leftButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

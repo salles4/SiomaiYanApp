@@ -88,11 +88,11 @@ public class gradientBG extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 703, Short.MAX_VALUE)
+            .addGap(0, 126, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGap(0, 26, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     Color lColor = Color.GRAY;
@@ -105,10 +105,9 @@ public class gradientBG extends javax.swing.JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         int w = getWidth(), h = getHeight();
         GradientPaint gp = new GradientPaint(0, 0, lColor, w, h, rColor);
-        
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, w, h);
-        //g2d.drawImage(image, 0, 0, w, h, null);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

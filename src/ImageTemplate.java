@@ -16,7 +16,7 @@ import org.imgscalr.Scalr;
  */
 public class ImageTemplate extends JComponent{
     private Icon icon;
-        public Icon getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 

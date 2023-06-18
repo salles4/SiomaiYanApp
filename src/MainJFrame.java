@@ -8,10 +8,12 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame() {
         conn = SQLiteJava.ConnDatabase();
         initComponents();
-        
+        nameTitleLabel.setText(accDetails.name);
+        typeuserLabel.setText(accDetails.admin ? "Admin" : "Employee");
+        tab2.setEnabled(accDetails.admin);
     }
     void CardSwitch(javax.swing.JButton button, javax.swing.JPanel panel){
-        javax.swing.JButton[] tabs = {tab1, tab2, tab3};
+        javax.swing.JButton[] tabs = {tab1, tab2, tab3, tab4};
         for (javax.swing.JButton i : tabs){
             if (i == button){
                 i.setBackground(Color.GRAY);
@@ -37,16 +39,16 @@ public class MainJFrame extends javax.swing.JFrame {
         tab2 = new javax.swing.JButton();
         tab3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        tab4 = new javax.swing.JButton();
         CardPanel = new javax.swing.JPanel();
         Panel_1 = new javax.swing.JPanel();
         imageTemplate2 = new ImageTemplate();
-        jLabel1 = new javax.swing.JLabel();
+        nameTitleLabel = new javax.swing.JLabel();
         minExit = new ImageTemplate();
         minExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         min = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        typeuserLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Siomai Yan!! App");
@@ -86,7 +88,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        tab3.setText("Cart");
+        tab3.setText("Cart 1");
         tab3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tab3.setFocusable(false);
         tab3.addActionListener(new java.awt.event.ActionListener() {
@@ -104,14 +106,17 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(153, 153, 153));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jButton2.setText("Suppliers");
-        jButton2.setFocusable(false);
-
-        jButton3.setBackground(new java.awt.Color(153, 153, 153));
         jButton3.setText("Logs");
         jButton3.setFocusable(false);
+
+        tab4.setText("Cart 2");
+        tab4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tab4.setFocusable(false);
+        tab4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tab4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout gradientBG1Layout = new javax.swing.GroupLayout(gradientBG1);
         gradientBG1.setLayout(gradientBG1Layout);
@@ -124,17 +129,18 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBG1Layout.createSequentialGroup()
-                        .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tab2)
-                            .addComponent(tab1)
-                            .addComponent(tab3)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tab4)
+                            .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(tab2)
+                                .addComponent(tab1)
+                                .addComponent(tab3)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31))))
         );
 
-        gradientBG1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {tab1, tab2, tab3});
+        gradientBG1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, tab1, tab2, tab3, tab4});
 
         gradientBG1Layout.setVerticalGroup(
             gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,8 +154,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tab3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tab4)
+                .addGap(12, 12, 12)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -175,8 +181,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
         imageTemplate2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/topPanel2.jpg"))); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
-        jLabel1.setText("Salles, Francis James E.");
+        nameTitleLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        nameTitleLabel.setText("Salles, Francis James E.");
 
         minExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/min_exit/stay_MinExit.png"))); // NOI18N
         minExit.setPreferredSize(new java.awt.Dimension(60, 30));
@@ -236,8 +242,8 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(min, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setText("Admin");
+        typeuserLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        typeuserLabel.setText("Admin");
 
         javax.swing.GroupLayout imageTemplate2Layout = new javax.swing.GroupLayout(imageTemplate2);
         imageTemplate2.setLayout(imageTemplate2Layout);
@@ -246,8 +252,8 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(imageTemplate2Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addGroup(imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(typeuserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(minExit, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
@@ -259,9 +265,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(minExit, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(imageTemplate2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(nameTitleLabel)
                         .addGap(0, 0, 0)
-                        .addComponent(jLabel2)))
+                        .addComponent(typeuserLabel)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -301,7 +307,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tab2ActionPerformed
 
     private void tab3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tab3ActionPerformed
-        CardSwitch(tab3, new CartPanel());
+        CardSwitch(tab3, new CartPanel(1));
     }//GEN-LAST:event_tab3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -352,6 +358,10 @@ public class MainJFrame extends javax.swing.JFrame {
         minExit.setIcon(makeIcon("pressed_Min.png"));
     }//GEN-LAST:event_minMousePressed
 
+    private void tab4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tab4ActionPerformed
+        CardSwitch(tab4, new CartPanel(2));
+    }//GEN-LAST:event_tab4ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -384,14 +394,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private ImageTemplate imageTemplate1;
     private ImageTemplate imageTemplate2;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel min;
     private ImageTemplate minExit;
+    private javax.swing.JLabel nameTitleLabel;
     private javax.swing.JButton tab1;
     private javax.swing.JButton tab2;
     private javax.swing.JButton tab3;
+    private javax.swing.JButton tab4;
+    private javax.swing.JLabel typeuserLabel;
     // End of variables declaration//GEN-END:variables
 }

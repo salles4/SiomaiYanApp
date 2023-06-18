@@ -53,7 +53,7 @@ public class AccountsPanel extends javax.swing.JPanel {
     //unique id generator
     String GenerateID() {
         int randomNums = new java.util.Random().nextInt(10000, 99999);
-        String tempID = IDPREFIX + " " + randomNums;
+        String tempID = IDPREFIX + " " + randomNums; // 2023 - #####
         for (String[] rowData : accounts) {
             if (rowData[0].equals(tempID)) {
                 tempID = GenerateID();
@@ -169,18 +169,9 @@ public class AccountsPanel extends javax.swing.JPanel {
 
         jLabel6.setText("Full Name:");
 
-        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                nameFieldKeyReleased(evt);
-            }
-        });
-
         jLabel7.setText("Phone Number:");
 
         numField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                numFieldKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 numFieldKeyTyped(evt);
             }
@@ -437,13 +428,16 @@ public class AccountsPanel extends javax.swing.JPanel {
         String num = numField.getText();
         String name = nameField.getText();
         if (user.isBlank() || pass.isBlank() || repass.isBlank() || num.isBlank() || name.isBlank()) {
-            JOptionPane.showMessageDialog(this, "Fill all fields", "", JOptionPane.WARNING_MESSAGE);
+            warning("Fill all fields");
             return;
         }
-
+        if (num.length() < 11 || !num.startsWith("09")) {
+            warning("Phone number is invalid");
+            return;
+        }
         if (pass.equals(repass)) {
             String setData[] = {user, pass, num, name};
-            SQLiteJava.SQLitePrepare("update accounts set user = ?, password = ? where id = '" + id + "'", setData);
+            SQLiteJava.SQLitePrepare("update accounts set user = ?, password = ?, contact = ?, name = ? where id = '" + id + "'", setData);
             button_add.setEnabled(true);
             button_save.setEnabled(false);
             passField.setText("");
@@ -454,18 +448,10 @@ public class AccountsPanel extends javax.swing.JPanel {
             IDField.setText(IDPREFIX);
             JOptionPane.showMessageDialog(this, "Successfully Updated!");
         } else {
-            JOptionPane.showMessageDialog(this, "Password Does not match", "", JOptionPane.WARNING_MESSAGE);
+            warning("Password does not match!");
         }
         ListToTable();
     }//GEN-LAST:event_button_saveActionPerformed
-
-    private void nameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldKeyReleased
-
-    private void numFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numFieldKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_numFieldKeyReleased
 
     private void numFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numFieldKeyTyped
         char c = evt.getKeyChar();
