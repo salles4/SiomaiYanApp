@@ -45,7 +45,9 @@ public class ProductsPanel extends javax.swing.JPanel {
         
         if (data!= null) AddSetText(addProd, data);
         
-        addProd.IDField.setText(Integer.parseInt(SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1"))+1+"");
+        addProd.IDField.setText(Integer.parseInt(SQLiteJava.SQLiteSelect
+        ("select id from products order by id desc limit 1"))+1+"");
+        
         int response = JOptionPane.showOptionDialog(this, addProd, "Add Product", JOptionPane.OK_CANCEL_OPTION, 
                 JOptionPane.PLAIN_MESSAGE, null, null, -1);
         

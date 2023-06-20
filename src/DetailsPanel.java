@@ -31,10 +31,11 @@ public class DetailsPanel extends javax.swing.JPanel {
         this.productID = product_id;
         initData();
     }
-    String[] datatoGet = {"name", "category", "price", "brand", "min_stock", "retailer"};
+    String[] datatoGet = {"name", "categName", "price", "brand", "min_stock", "retailer"};
     private void initData(){
         String[] data = new String[datatoGet.length];
-        SQLiteJava.SQLiteRS("SELECT * from products p join products_details d on p.id = d.product_id where id = "+productID, data, datatoGet);
+        SQLiteJava.SQLiteRS("SELECT *, categories.name as categName from products p join products_details d on p.id = d.product_id "
+                + "join categories on d.category = categories.id where p.id = "+productID, data, datatoGet);
         for (int i = 0; i < data.length; i++){
             if(data[i] == null){
                data[i] = "null";

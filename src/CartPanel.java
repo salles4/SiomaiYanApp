@@ -35,7 +35,8 @@ public class CartPanel extends javax.swing.JPanel {
     public final void syncDataToList() {
         SQLiteJava.SQLiteRS("select * from products", inventoryArray, dataToGetinInventory);
         SQLiteJava.SQLiteRS("select product_id, name, visible, c.amount from carts c "
-                + "join products p on c.product_id = p.id where cart = "+CARTNUMBER+" order by p.id", cartArray, dataToGetinCart);
+                + "join products p on c.product_id = p.id where cart = "+CARTNUMBER
+                + " order by p.id", cartArray, dataToGetinCart);
     }
 
     public final void ListData() {

@@ -37,7 +37,9 @@ public class SQLiteJava {
     public static void SQLiteRS(String command, ArrayList AccountArray) {
         AccountArray.clear();
         try (Statement statement = conn.createStatement()) {
-            ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visible = 1");
+            ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visi\n" +
+"            }\n" +
+"            System.out.println(\"Data Listed.\");ble = 1");
             if (rs.next()) {
                 do {
                     String[] row = {rs.getString("id"), rs.getString("user"),
