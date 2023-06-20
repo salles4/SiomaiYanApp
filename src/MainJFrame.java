@@ -11,6 +11,8 @@ public class MainJFrame extends javax.swing.JFrame {
         nameTitleLabel.setText(accDetails.name);
         typeuserLabel.setText(accDetails.admin ? "Admin" : "Employee");
         tab2.setEnabled(accDetails.admin);
+        
+        CardSwitch(tab1, new ProductsPanel());
     }
     void CardSwitch(javax.swing.JButton button, javax.swing.JPanel panel){
         javax.swing.JButton[] tabs = {tab1, tab2, tab3, tab4};
@@ -34,13 +36,15 @@ public class MainJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         gradientBG1 = new gradientBG();
-        imageTemplate1 = new ImageTemplate();
+        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         tab1 = new javax.swing.JButton();
         tab2 = new javax.swing.JButton();
         tab3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         tab4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        imageTemplate1 = new ImageTemplate();
         CardPanel = new javax.swing.JPanel();
         Panel_1 = new javax.swing.JPanel();
         imageTemplate2 = new ImageTemplate();
@@ -68,35 +72,6 @@ public class MainJFrame extends javax.swing.JFrame {
         gradientBG1.setBackground(new java.awt.Color(255, 51, 51));
         gradientBG1.setForeground(new java.awt.Color(153, 0, 0));
 
-        imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo_duced.png"))); // NOI18N
-
-        tab1.setText("Products");
-        tab1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tab1.setFocusable(false);
-        tab1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tab1ActionPerformed(evt);
-            }
-        });
-
-        tab2.setText("Accounts");
-        tab2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tab2.setFocusable(false);
-        tab2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tab2ActionPerformed(evt);
-            }
-        });
-
-        tab3.setText("Cart 1");
-        tab3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tab3.setFocusable(false);
-        tab3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tab3ActionPerformed(evt);
-            }
-        });
-
         jButton1.setText("Log Out");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setFocusable(false);
@@ -106,8 +81,38 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Logs");
-        jButton3.setFocusable(false);
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.GridLayout(0, 1, 30, 14));
+
+        tab1.setText("Products");
+        tab1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tab1.setFocusable(false);
+        tab1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tab1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(tab1);
+
+        tab2.setText("Accounts");
+        tab2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tab2.setFocusable(false);
+        tab2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tab2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(tab2);
+
+        tab3.setText("Cart 1");
+        tab3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tab3.setFocusable(false);
+        tab3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tab3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(tab3);
 
         tab4.setText("Cart 2");
         tab4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -117,46 +122,56 @@ public class MainJFrame extends javax.swing.JFrame {
                 tab4ActionPerformed(evt);
             }
         });
+        jPanel1.add(tab4);
+
+        jButton3.setText("Logs");
+        jButton3.setFocusable(false);
+        jPanel1.add(jButton3);
+
+        jPanel2.setOpaque(false);
+
+        imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo_duced.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout gradientBG1Layout = new javax.swing.GroupLayout(gradientBG1);
         gradientBG1.setLayout(gradientBG1Layout);
         gradientBG1Layout.setHorizontalGroup(
             gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradientBG1Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBG1Layout.createSequentialGroup()
-                        .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBG1Layout.createSequentialGroup()
-                        .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tab4)
-                            .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tab2)
-                                .addComponent(tab1)
-                                .addComponent(tab3)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(gradientBG1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-
-        gradientBG1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, tab1, tab2, tab3, tab4});
-
         gradientBG1Layout.setVerticalGroup(
             gradientBG1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradientBG1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(106, 106, 106)
-                .addComponent(tab1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tab2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tab3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tab4)
-                .addGap(12, 12, 12)
-                .addComponent(jButton3)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(19, 19, 19))
@@ -170,7 +185,7 @@ public class MainJFrame extends javax.swing.JFrame {
         Panel_1.setLayout(Panel_1Layout);
         Panel_1Layout.setHorizontalGroup(
             Panel_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1039, Short.MAX_VALUE)
+            .addGap(0, 1059, Short.MAX_VALUE)
         );
         Panel_1Layout.setVerticalGroup(
             Panel_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,6 +410,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private ImageTemplate imageTemplate2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel min;
     private ImageTemplate minExit;
     private javax.swing.JLabel nameTitleLabel;

@@ -479,15 +479,10 @@ public class DetailsPanel extends javax.swing.JPanel {
             File READfile = new File(fileChoose.getSelectedFile().getAbsolutePath());
             File destinationFile = new File("src/img/product_img/"+productID+".jpg");
             
-            System.out.println(READfile);
-            System.out.println(destinationFile);
             try {
-                System.out.println("tried to write");
                 if(destinationFile.exists()) destinationFile.delete();
                 BufferedImage readimage = ImageIO.read(READfile);
                 ImageIO.write(readimage, "jpg", destinationFile);
-                System.out.println("written");
-                System.out.println(destinationFile.exists());
                 newimageWarningLabel.setVisible(true);
                 time.start();
             } catch (IOException e) {

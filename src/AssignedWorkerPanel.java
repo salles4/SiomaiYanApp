@@ -49,7 +49,7 @@ public class AssignedWorkerPanel extends javax.swing.JPanel {
         nameLabel.setText("Francis James E. Salles");
         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/product_img/10.jpg"))); // NOI18N
+        imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/defprof.jpg"))); // NOI18N
 
         numLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         numLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);

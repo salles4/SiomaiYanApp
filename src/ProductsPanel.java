@@ -40,6 +40,55 @@ public class ProductsPanel extends javax.swing.JPanel {
         revalidate();
         repaint();
     }
+    private void AddProduct(String[] data){
+        AddModifyProduct addProd = new AddModifyProduct();
+        
+        if (data!= null) AddSetText(addProd, data);
+        
+        addProd.IDField.setText(Integer.parseInt(SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1"))+1+"");
+        int response = JOptionPane.showOptionDialog(this, addProd, "Add Product", JOptionPane.OK_CANCEL_OPTION, 
+                JOptionPane.PLAIN_MESSAGE, null, null, -1);
+        
+        if (response == JOptionPane.OK_OPTION){
+            String[] dataIn = {
+                addProd.ProdNameField.getText(),
+                addProd.StockField.getText(),
+                addProd.WarningField.getText(),
+                addProd.priceField.getText(),
+                addProd.brandField.getText(),
+                String.valueOf(addProd.categoryField.getSelectedIndex()),
+                String.valueOf(addProd.retailerField.getSelectedIndex())
+            };
+            boolean blanked = false;
+            for (int i = 0; i < dataIn.length; i++){
+                if (dataIn[i].isBlank()){
+                    if(i == 3 || i == 4){
+                        continue;
+                    }
+                    blanked = true;
+                }
+            }
+            if (blanked) {
+                JOptionPane.showMessageDialog(this, "Fill all required fields.",
+                    "", JOptionPane.WARNING_MESSAGE);
+                AddProduct(dataIn);
+                return;
+            }
+            SQLiteJava.SQLitePrepare("insert into products "
+                    + "(name,amount,min_stock,price) values (?,?,?,?);"
+                    + "insert into product_details (product_id,brand,category,retailer)"
+                    + "values (select id from products order by id desc limit 1,?,?,? ", data);
+        }
+    }
+    private void AddSetText(AddModifyProduct addprod, String[] data){
+        addprod.ProdNameField.setText(data[0]);
+        addprod.StockField.setText(data[1]);
+        addprod.WarningField.setText(data[2]);
+        addprod.priceField.setText(data[3]);
+        addprod.brandField.setText(data[4]);
+        addprod.categoryField.setSelectedIndex(Integer.parseInt(data[5]));
+        addprod.retailerField.setSelectedIndex(Integer.parseInt(data[6]));
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -186,7 +235,7 @@ public class ProductsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_textSearchFieldKeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JOptionPane.showMessageDialog(this, new AddModifyProduct(), "",JOptionPane.PLAIN_MESSAGE);
+        AddProduct(null);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

@@ -212,24 +212,23 @@ public class SQLiteJava {
     }
 
     public static boolean SQLiteLogIn(String user, String pass) {
-        boolean haveAcc = false;
         try (PreparedStatement credCheck = conn.prepareStatement("select * from accounts where "
                 + "user=? and password=? and visible = 1")) {
             credCheck.setString(1, user);
             credCheck.setString(2, pass);
             ResultSet rs = credCheck.executeQuery();
             if (rs.next()) {
-                haveAcc = true;
                 accDetails.username = rs.getString("user");
                 accDetails.accnumber = rs.getString("id");
                 accDetails.name = rs.getString("name");
                 int admin = rs.getInt("admin");
                 accDetails.admin = (admin != 0) ;
+                return true;
             }
         } catch (SQLException ex) {
             showError(ex);
         }
-        return haveAcc;
+        return false;
     }
 
     //displays joptionpane for catching error
