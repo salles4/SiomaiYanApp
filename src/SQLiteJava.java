@@ -37,9 +37,9 @@ public class SQLiteJava {
     public static void SQLiteRS(String command, ArrayList AccountArray) {
         AccountArray.clear();
         try (Statement statement = conn.createStatement()) {
-            ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visi\n" +
-"            }\n" +
-"            System.out.println(\"Data Listed.\");ble = 1");
+            ResultSet rs = statement.executeQuery("SELECT * FROM (" + command + ") where visi\n"
+                    + "            }\n"
+                    + "            System.out.println(\"Data Listed.\");ble = 1");
             if (rs.next()) {
                 do {
                     String[] row = {rs.getString("id"), rs.getString("user"),
@@ -91,11 +91,13 @@ public class SQLiteJava {
             showError(e);
         }
     }
-    /** runs a SQL command and return value in given column
-     * 
+
+    /**
+     * runs a SQL command and return value in given column
+     *
      * @param command
      * @param column
-     * @return 
+     * @return
      */
     public static String SQLiteRS(String command, String column) {
         try (Statement statement = conn.createStatement()) {
@@ -108,11 +110,13 @@ public class SQLiteJava {
         }
         return "null";
     }
-    /** runs a SQL command and return the selected value
-     * 
-     * 
+
+    /**
+     * runs a SQL command and return the selected value
+     *
+     *
      * @param command specify column in select % from ...
-     * @return 
+     * @return
      */
     public static String SQLiteSelect(String command) {
         try (Statement statement = conn.createStatement()) {
@@ -125,12 +129,35 @@ public class SQLiteJava {
         }
         return "null";
     }
-    /**adds the data from database to the given panel
-     * 
+
+    /**
+     * runs a SQL command and adds it to the arrayList Supports one column only
+     *
+     * @param command specify column in select % from ...
+     * @param arrayList
+     * @return
+     */
+    public static String SQLiteSelect(String command, ArrayList arrayList) {
+        try (Statement statement = conn.createStatement()) {
+            ResultSet rs = statement.executeQuery(command);
+            if (rs.next()) {
+                do {
+                    arrayList.add(rs.getString(1));
+                } while (rs.next());
+            }
+        } catch (SQLException e) {
+            showError(e);
+        }
+        return "null";
+    }
+
+    /**
+     * adds the data from database to the given panel
+     *
      * @param command sqlCommand
      * @param panel Scroll Panel to add into
      */
-    
+
     public static void SQLiteRS(String command, ProductsPanel panel) {
         panel.ScrollPanel.removeAll();
         try (Statement statement = conn.createStatement()) {
@@ -152,8 +179,9 @@ public class SQLiteJava {
         panel.ScrollPanel.repaint();
     }
 
-    /**adds data to database through prepare statement for better security
-     * 
+    /**
+     * adds data to database through prepare statement for better security
+     *
      * @param PreparedCommand sqlCommand
      * @param setData value to the ? in prepared command
      */
@@ -167,11 +195,12 @@ public class SQLiteJava {
             showError(e);
         }
     }
-    
+
     /**
-    *   run given command to database
+     * run given command to database
+     *
      * @param command sqlCommand
-    */            
+     */
     public static void SQLite(String command) {
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(command);
@@ -179,7 +208,8 @@ public class SQLiteJava {
             showError(e);
         }
     }
-    public static int SQLiteExeUpdate(String command){
+
+    public static int SQLiteExeUpdate(String command) {
         try (Statement stmt = conn.createStatement()) {
             return stmt.executeUpdate(command);
         } catch (SQLException ex) {
@@ -187,6 +217,7 @@ public class SQLiteJava {
         }
         return 0;
     }
+
     //returns boolean if a value exists in command given
     public static boolean SQLiteCheckIfInDatabase(String command, String[] value) {
         try (PreparedStatement userCheck = conn.prepareStatement(command)) {
@@ -224,7 +255,7 @@ public class SQLiteJava {
                 accDetails.accnumber = rs.getString("id");
                 accDetails.name = rs.getString("name");
                 int admin = rs.getInt("admin");
-                accDetails.admin = (admin != 0) ;
+                accDetails.admin = (admin != 0);
                 return true;
             }
         } catch (SQLException ex) {

@@ -1,0 +1,2 @@
+DetailsPage
+DetailsPage$1

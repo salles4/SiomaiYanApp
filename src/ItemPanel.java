@@ -22,7 +22,7 @@ public class ItemPanel extends javax.swing.JPanel {
         prodName.setText(data[1]);
         prodID.setText("ID#"+id);
         if(data[3] != null){
-            priceLabel.setText("₱"+data[3]);
+            priceLabel.setText("₱"+String.format("%.2f", Double.valueOf(data[3])));
         }else{
             priceLabel.setText("");
         }
@@ -101,7 +101,6 @@ public class ItemPanel extends javax.swing.JPanel {
         prodID.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         prodID.setText("ID#123123");
 
-        priceLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         priceLabel.setText("₱");
         priceLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -122,10 +121,10 @@ public class ItemPanel extends javax.swing.JPanel {
                     .addComponent(prodName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(gradientBGLayout.createSequentialGroup()
                         .addComponent(prodID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 6, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(32, 32, 32)
                 .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(minStock, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                     .addComponent(stockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

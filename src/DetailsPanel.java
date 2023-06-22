@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -31,11 +32,15 @@ public class DetailsPanel extends javax.swing.JPanel {
         this.productID = product_id;
         initData();
     }
-    String[] datatoGet = {"name", "categName", "price", "brand", "min_stock", "retailer"};
+    String[] datatoGet = {"name", "categName", "price", "brand", "min_stock", "retName"};
     private void initData(){
         String[] data = new String[datatoGet.length];
-        SQLiteJava.SQLiteRS("SELECT *, categories.name as categName from products p join products_details d on p.id = d.product_id "
-                + "join categories on d.category = categories.id where p.id = "+productID, data, datatoGet);
+        SQLiteJava.SQLiteRS("SELECT *, categories.name as categName, r.name as retName from products p "
+                + "join products_details d on p.id = d.product_id "
+                + "join categories on d.category = categories.id "
+                + "join retails r on d.retailer = r.id "
+                + "where p.id = "+productID, data, datatoGet);
+        System.out.println(Arrays.toString(data));
         for (int i = 0; i < data.length; i++){
             if(data[i] == null){
                data[i] = "null";
@@ -70,10 +75,10 @@ public class DetailsPanel extends javax.swing.JPanel {
                 totalStock += Integer.parseInt(i);
             }
         }
-        JLabel imageLabel = new JLabel();
+        /*JLabel imageLabel = new JLabel();
         ImageIcon imageicon = new ImageIcon("/img/product_img/"+productID+".jpg");
         Image img = imageicon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-        imageLabel.setIcon(new ImageIcon(img));
+        imageLabel.setIcon(new ImageIcon(img));*/
         jTable1.setValueAt(invStock, 0, 1);
         jTable1.setValueAt(c1Stock, 1, 1);
         jTable1.setValueAt(c2Stock, 2, 1);
@@ -368,6 +373,11 @@ public class DetailsPanel extends javax.swing.JPanel {
 
         jButton3.setText("Modify");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/product_img/default.png"))); // NOI18N
         image.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -494,6 +504,92 @@ public class DetailsPanel extends javax.swing.JPanel {
         
         
     }//GEN-LAST:event_imageMousePressed
+    private void ModifySetText(AddModifyProduct addprod, String[] data){
+        addprod.ProdNameField.setText(data[0]);
+        addprod.StockField.setText(data[1]);
+        addprod.WarningField.setText(data[2]);
+        addprod.priceField.setText(data[3]);
+        addprod.brandField.setText(data[4]);
+        addprod.categoryField.setSelectedIndex(Integer.parseInt(data[5]));
+        addprod.retailerField.setSelectedIndex(Integer.parseInt(data[6]));
+    }
+    private void ModifyProduct(String[] data){
+        AddModifyProduct addProd = new AddModifyProduct();
+        
+        // set data
+        if (data!= null){
+            ModifySetText(addProd, data);
+        } else{
+            String[] columnstoSetText = {"name", "amount", "min_stock", "price", "brand", "category", "retailer"};
+            String[] datatoSetText = new String[columnstoSetText.length];
+            SQLiteJava.SQLiteRS("SELECT * from products p join products_details d on p.id = d.product_id "
+                    + "join categories on d.category = categories.id where p.id = "+productID, datatoSetText, columnstoSetText);
+            ModifySetText(addProd, datatoSetText);
+        }
+        addProd.IDField.setText(productID+"");
+        addProd.Title.setText("Modify Product");
+        addProd.imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/product_edit.png")));
+        
+        int response = JOptionPane.showOptionDialog(this, addProd, "Add Product", JOptionPane.OK_CANCEL_OPTION, 
+                JOptionPane.PLAIN_MESSAGE, null, null, -1);
+        
+        if (response == JOptionPane.OK_OPTION){
+            String[] dataIn = {
+                addProd.ProdNameField.getText(),
+                addProd.StockField.getText(),
+                addProd.WarningField.getText(),
+                addProd.priceField.getText(),
+                addProd.brandField.getText(),
+                String.valueOf(addProd.categoryField.getSelectedIndex()),
+                String.valueOf(addProd.retailerField.getSelectedIndex())
+            };
+            System.out.println(Arrays.toString(dataIn));
+            boolean blanked = false;
+            for (int i = 0; i < dataIn.length; i++){
+                if (dataIn[i].isBlank()){
+                    if(i == 3 || i == 4){
+                        continue;
+                    }
+                    blanked = true;
+                }
+            }
+            if (blanked) {
+                JOptionPane.showMessageDialog(this, "Fill all required fields.",
+                    "", JOptionPane.WARNING_MESSAGE);
+                ModifyProduct(dataIn);
+                return;
+            }
+            
+            String[] productsIn = {dataIn[0], dataIn[1], dataIn[2], dataIn[3]};
+            dataIn[3] = dataIn[3].equals("0") || dataIn[3].isBlank() ? null : dataIn[3];
+            String[] moredetailsIn = {dataIn[4], dataIn[5], dataIn[6]};
+            
+            SQLiteJava.SQLitePrepare("update products set name = ?, amount = ?, min_stock = ?, price = ? where id = "
+                    + productID, productsIn);
+            SQLiteJava.SQLitePrepare("Update products_details set brand = ?, category = ?, retailer = ? where"
+                    + " product_id = "+ productID, moredetailsIn);
+            SQLiteJava.SQLite("update products set price = null where price = 0 or price = ''");
+            
+            if(!addProd.selectedImagePath.equals("/img/defIMG.png")){
+                File READfile = new File(addProd.selectedImagePath);
+                File destinationFile = new File("src/img/product_img/"+SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1")+".jpg");
+
+                try {
+                    if(destinationFile.exists()) destinationFile.delete();
+                    BufferedImage readimage = ImageIO.read(READfile);
+                    ImageIO.write(readimage, "jpg", destinationFile);
+                } catch (IOException e) {
+                    System.out.println("Error copying and converting image: " + e.getMessage());
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, dataIn[0] + " has been successfully added to database!",
+                    "", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ModifyProduct(null);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     @Override

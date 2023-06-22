@@ -1,4 +1,9 @@
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /*
@@ -61,6 +66,7 @@ public class ProductsPanel extends javax.swing.JPanel {
                 String.valueOf(addProd.categoryField.getSelectedIndex()),
                 String.valueOf(addProd.retailerField.getSelectedIndex())
             };
+            System.out.println(Arrays.toString(dataIn));
             boolean blanked = false;
             for (int i = 0; i < dataIn.length; i++){
                 if (dataIn[i].isBlank()){
@@ -76,10 +82,32 @@ public class ProductsPanel extends javax.swing.JPanel {
                 AddProduct(dataIn);
                 return;
             }
-            SQLiteJava.SQLitePrepare("insert into products "
-                    + "(name,amount,min_stock,price) values (?,?,?,?);"
-                    + "insert into product_details (product_id,brand,category,retailer)"
-                    + "values (select id from products order by id desc limit 1,?,?,? ", data);
+            
+            String[] productsIn = {dataIn[0], dataIn[1], dataIn[2], dataIn[3]};
+            dataIn[3] = dataIn[3].equals("0") || dataIn[3].isBlank() ? null : dataIn[3];
+            String[] moredetailsIn = {dataIn[4], dataIn[5], dataIn[6]};
+            
+            SQLiteJava.SQLitePrepare("insert into products (name,amount,min_stock,price) "
+                                    + "values (?,?,?,?)", productsIn);
+            SQLiteJava.SQLitePrepare("insert into products_details (product_id,brand,category,retailer)"
+                                    + "values ((select id from products order by id desc limit 1),?,?,?) ", moredetailsIn);
+            SQLiteJava.SQLite("update products set price = null where price = 0 or price = ''");
+            
+            if(!addProd.selectedImagePath.equals("/img/defIMG.png")){
+                File READfile = new File(addProd.selectedImagePath);
+                File destinationFile = new File("src/img/product_img/"+SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1")+".jpg");
+
+                try {
+                    if(destinationFile.exists()) destinationFile.delete();
+                    BufferedImage readimage = ImageIO.read(READfile);
+                    ImageIO.write(readimage, "jpg", destinationFile);
+                } catch (IOException e) {
+                    System.out.println("Error copying and converting image: " + e.getMessage());
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, dataIn[0] + " has been successfully added to database!",
+                    "", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     private void AddSetText(AddModifyProduct addprod, String[] data){
@@ -107,6 +135,9 @@ public class ProductsPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         textSearchField = new javax.swing.JTextField();
         imageTemplate1 = new ImageTemplate();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1039, 512));
@@ -154,14 +185,16 @@ public class ProductsPanel extends javax.swing.JPanel {
 
         imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/siomai_only.png"))); // NOI18N
 
+        jButton2.setText("Categories");
+
+        jButton3.setText("Retailers");
+
+        jButton4.setText("Print");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jButton1)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,6 +212,14 @@ public class ProductsPanel extends javax.swing.JPanel {
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(textSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,9 +237,15 @@ public class ProductsPanel extends javax.swing.JPanel {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(43, 43, 43)
                 .addComponent(jButton1)
-                .addContainerGap(275, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addGap(49, 49, 49))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -246,6 +293,9 @@ public class ProductsPanel extends javax.swing.JPanel {
     public javax.swing.JPanel ScrollPanel;
     private ImageTemplate imageTemplate1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
