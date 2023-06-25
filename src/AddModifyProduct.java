@@ -22,7 +22,7 @@ public class AddModifyProduct extends javax.swing.JPanel {
     private void setComboBox(){
         categoriesList.clear();
         RetailList.clear();
-        SQLiteJava.SQLiteSelect("select name from categories order by id", categoriesList);
+        SQLiteJava.SQLiteSelect("select name from categories where visible = 1 order by id", categoriesList);
         SQLiteJava.SQLiteSelect("select name from retails order by id", RetailList);
         
         categoryField.setModel(new javax.swing.DefaultComboBoxModel<>(categoriesList.toArray(new String[0])));
@@ -293,25 +293,6 @@ public class AddModifyProduct extends javax.swing.JPanel {
             selectedImagePath = fileChoose.getSelectedFile().getAbsolutePath();
             imageTemplateNoSclr1.setIcon(new javax.swing.ImageIcon(selectedImagePath));
             removeImage.setVisible(true);
-            /*
-            File READfile = new File(fileChoose.getSelectedFile().getAbsolutePath());
-            File destinationFile = new File("src/img/product_img/"+productID+".jpg");
-            
-            System.out.println(READfile);
-            System.out.println(destinationFile);
-            try {
-                System.out.println("tried to write");
-                if(destinationFile.exists()) destinationFile.delete();
-                BufferedImage readimage = ImageIO.read(READfile);
-                ImageIO.write(readimage, "jpg", destinationFile);
-                System.out.println("written");
-                System.out.println(destinationFile.exists());
-                newimageWarningLabel.setVisible(true);
-                time.start();
-            } catch (IOException e) {
-                System.out.println("Error copying and converting image: " + e.getMessage());
-            }*/
-            
         }
     }//GEN-LAST:event_imageTemplateNoSclr1MousePressed
 

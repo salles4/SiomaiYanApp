@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -11,9 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 
@@ -88,8 +85,6 @@ public class DetailsPanel extends javax.swing.JPanel {
         if (c2Stock.equals("null")) jTable1.setValueAt(0, 2, 1);
         
         File checkFileExists = new File("src/img/product_img/"+productID+".jpg");
-        System.out.println(checkFileExists.getPath());
-        System.out.println(checkFileExists.exists());
         if (checkFileExists.exists()){
             image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/product_img/"+productID+".jpg")));
         }
@@ -529,7 +524,9 @@ public class DetailsPanel extends javax.swing.JPanel {
         addProd.IDField.setText(productID+"");
         addProd.Title.setText("Modify Product");
         addProd.imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/product_edit.png")));
-        
+        if(new File("src/img/product_img/"+productID+".jpg").exists()){
+            addProd.imageTemplateNoSclr1.setIcon(new javax.swing.ImageIcon("src/img/product_img/"+productID+".jpg"));
+        }
         int response = JOptionPane.showOptionDialog(this, addProd, "Add Product", JOptionPane.OK_CANCEL_OPTION, 
                 JOptionPane.PLAIN_MESSAGE, null, null, -1);
         
@@ -572,7 +569,7 @@ public class DetailsPanel extends javax.swing.JPanel {
             
             if(!addProd.selectedImagePath.equals("/img/defIMG.png")){
                 File READfile = new File(addProd.selectedImagePath);
-                File destinationFile = new File("src/img/product_img/"+SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1")+".jpg");
+                File destinationFile = new File("src/img/product_img/"+productID+".jpg");
 
                 try {
                     if(destinationFile.exists()) destinationFile.delete();
@@ -583,7 +580,7 @@ public class DetailsPanel extends javax.swing.JPanel {
                 }
             }
 
-            JOptionPane.showMessageDialog(this, dataIn[0] + " has been successfully added to database!",
+            JOptionPane.showMessageDialog(this, dataIn[0] + " has been successfully updated!",
                     "", JOptionPane.INFORMATION_MESSAGE);
         }
     }

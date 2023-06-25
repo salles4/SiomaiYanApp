@@ -157,7 +157,6 @@ public class SQLiteJava {
      * @param command sqlCommand
      * @param panel Scroll Panel to add into
      */
-
     public static void SQLiteRS(String command, ProductsPanel panel) {
         panel.ScrollPanel.removeAll();
         try (Statement statement = conn.createStatement()) {
@@ -264,8 +263,16 @@ public class SQLiteJava {
         return false;
     }
 
+    int GenerateIDforLogs() {
+        int randomNums = new java.util.Random().nextInt(10000, 99999);
+        if (SQLiteCheckIfInDatabase("select id from logs where id = ?", randomNums + "")) {
+            randomNums = GenerateIDforLogs();
+        }
+        return randomNums;
+    }
+
     //displays joptionpane for catching error
     private static void showError(SQLException e) {
-        JOptionPane.showMessageDialog(null, e, "DATABASE ERROR", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, e.getLocalizedMessage()+"\n"+e.getMessage(), "DATABASE ERROR", JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -1,6 +1,8 @@
 
 import java.awt.Color;
 import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 public class ItemPanel extends javax.swing.JPanel {
 
     ProductsPanel ProductPanel;
@@ -56,6 +58,7 @@ public class ItemPanel extends javax.swing.JPanel {
         priceLabel = new javax.swing.JLabel();
         minStock = new javax.swing.JLabel();
         image = new ImageTemplate();
+        addButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -109,6 +112,24 @@ public class ItemPanel extends javax.swing.JPanel {
         minStock.setText("Warning at:");
         minStock.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        addButton.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
+        addButton.setText("+");
+        addButton.setToolTipText("Add Stock");
+        addButton.setContentAreaFilled(false);
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addButtonMouseExited(evt);
+            }
+        });
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout gradientBGLayout = new javax.swing.GroupLayout(gradientBG);
         gradientBG.setLayout(gradientBGLayout);
         gradientBGLayout.setHorizontalGroup(
@@ -121,33 +142,37 @@ public class ItemPanel extends javax.swing.JPanel {
                     .addComponent(prodName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(gradientBGLayout.createSequentialGroup()
                         .addComponent(prodID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 50, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(minStock, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                    .addComponent(stockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(minStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         gradientBGLayout.setVerticalGroup(
             gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(gradientBGLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gradientBGLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(gradientBGLayout.createSequentialGroup()
+                            .addComponent(stockLabel)
+                            .addGap(0, 0, 0)
+                            .addComponent(minStock)))
                     .addGroup(gradientBGLayout.createSequentialGroup()
                         .addComponent(prodName)
                         .addGap(0, 0, 0)
-                        .addComponent(prodID))
-                    .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(gradientBGLayout.createSequentialGroup()
-                        .addComponent(stockLabel)
-                        .addGap(0, 0, 0)
-                        .addComponent(minStock)))
+                        .addComponent(prodID)))
                 .addContainerGap(21, Short.MAX_VALUE))
+            .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -198,8 +223,52 @@ public class ItemPanel extends javax.swing.JPanel {
         createDetailsFrame();
     }//GEN-LAST:event_formMousePressed
 
+    private void addButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseEntered
+        addButton.setForeground(new Color(0xDDDDDD));
+    }//GEN-LAST:event_addButtonMouseEntered
+
+    private void addButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseExited
+        addButton.setForeground(Color.BLACK);
+    }//GEN-LAST:event_addButtonMouseExited
+
+    private void showDialog(){
+        try{
+            
+            Object in = JOptionPane.showInputDialog(ProductPanel, 
+                    "Input amount of stock", "Add Stock", JOptionPane.QUESTION_MESSAGE,
+                    new ImageIcon("src/img/product_add.png"), null, "");
+            String inString = in+"";
+            if (!(in == null || inString.isEmpty())){
+                int inNum = Integer.parseInt(inString);
+                if(inNum > 900){
+                    int response = JOptionPane.showConfirmDialog(ProductPanel, 
+                            "Are you sure you want to add "+inNum+" stock in "+prodName.getText()+"?",
+                            "Add "+inNum+"?", JOptionPane.YES_NO_OPTION);
+                    if(response == JOptionPane.YES_OPTION){
+                        SQLiteJava.SQLite("update products set amount = amount + "+inNum+" where id = "+ id);
+                        System.out.println("added"+inNum);
+                    }
+                }else{
+                    SQLiteJava.SQLite("update products set amount = amount + "+inNum+" where id = "+ id);
+                    System.out.println("added"+inNum);
+                }
+                ProductPanel.ListProducts();
+            }else{
+                System.out.println("Xed or Closed");
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(ProductPanel, "ERROR: Invalid Input, Try Again");
+            showDialog();
+        }
+    }
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        showDialog();
+    }//GEN-LAST:event_addButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private gradientBG gradientBG;
     private ImageTemplate image;
     private javax.swing.JButton jButton1;

@@ -42,11 +42,10 @@ public class ImageTemplate extends JComponent{
             int height = getHeight();
             
             Graphics2D g2_img = (Graphics2D) grphcs;
-            //Composite composite = g2_img.getComposite();
+            
             g2_img.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2_img.drawImage(toImage(icon), 0, 0, width, height, null);
-            //g2_img.setComposite(composite);
-            //g2_img.dispose();
+            
         }
         super.paintComponent(grphcs);
     }
