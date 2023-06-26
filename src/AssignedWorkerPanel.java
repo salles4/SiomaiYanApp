@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
@@ -35,9 +38,9 @@ public class AssignedWorkerPanel extends javax.swing.JPanel {
 
         jLabel2 = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
-        imageTemplate1 = new ImageTemplate();
         numLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("ID: 2023 - 123456");
@@ -48,8 +51,6 @@ public class AssignedWorkerPanel extends javax.swing.JPanel {
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         nameLabel.setText("Francis James E. Salles");
         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-
-        imageTemplate1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/defprof.jpg"))); // NOI18N
 
         numLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         numLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -62,41 +63,47 @@ public class AssignedWorkerPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setText("Cart Data");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(186, 186, 186)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
+                        .addGap(18, 18, 18)
                         .addComponent(nameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(numLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(numLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nameLabel)
                 .addGap(0, 0, 0)
                 .addComponent(numLabel)
-                .addGap(0, 0, 0)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        SQLiteJava.SQLiteLog("Removed assignment of "+name+" (ID: "+id+") from Cart #"+cartpanel.CARTNUMBER, "Assign Worker");
         SQLiteJava.SQLite("update accounts set cart = 0 where cart = "+cartpanel.CARTNUMBER+"");
         cartpanel.AssignWorker();
 //        cartpanel.assignWorkerPanel.add(new NoWorkerAssignedPanel(cartpanel));
@@ -105,10 +112,31 @@ public class AssignedWorkerPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String[] options = {"Confirm Sell and Return", "Cancel"};
+        int response = JOptionPane.showOptionDialog(cartpanel, new ConfirmSoldPanel(cartpanel, name, num), "Confirm Products List",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, 
+                null, options, -1);
+        if (response == JOptionPane.OK_OPTION){
+            int responseAgain = JOptionPane.showConfirmDialog(cartpanel, """
+                    All sold products listed in this food cart will be set to 0 and will be reduced from the cart inventory. 
+                    Are you sure you want to continue?""", "Reset Food Cart?", JOptionPane.YES_NO_OPTION);
+            if(responseAgain == JOptionPane.YES_OPTION){
+                SQLiteJava.SQLite("update carts set amount = return where cart = "+cartpanel.CARTNUMBER);
+                SQLiteJava.SQLite("update carts set sold = 0 where cart = "+cartpanel.CARTNUMBER);
+                JOptionPane.showMessageDialog(cartpanel, "Done!");
+                cartpanel.revalidate();
+                cartpanel.repaint();
+            }else{
+                jButton2ActionPerformed(evt);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private ImageTemplate imageTemplate1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel numLabel;

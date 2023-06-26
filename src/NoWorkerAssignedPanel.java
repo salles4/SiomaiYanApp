@@ -58,15 +58,18 @@ public class NoWorkerAssignedPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String[] opt = {"Assign", "Cancel"};
         AssignWorker work = new AssignWorker();
-        System.out.println("optiuon pane craeted");
+        
         int response = JOptionPane.showOptionDialog(cartpanel, work, "Assign employee to Cart "+cartpanel.CARTNUMBER,
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, opt, -1);
         if(response != JOptionPane.OK_OPTION){
             System.out.println("returned");
             return;
         }
-        System.out.println("update try");
+        if (work.SelectedID == null){
+            return;
+        }
         SQLiteJava.SQLite("update accounts set cart = "+cartpanel.CARTNUMBER+" where id = '"+work.SelectedID+"'");
+        SQLiteJava.SQLiteLog("Added assignment of "+work.nameLabel.getText()+" (ID: "+work.SelectedID+") to Cart #"+cartpanel.CARTNUMBER, "Assign Worker");
         cartpanel.AssignWorker();
     }//GEN-LAST:event_jButton1ActionPerformed
 

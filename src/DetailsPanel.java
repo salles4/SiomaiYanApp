@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class DetailsPanel extends javax.swing.JPanel {
@@ -28,6 +30,19 @@ public class DetailsPanel extends javax.swing.JPanel {
         this.productsPanel = productsPanel;
         this.productID = product_id;
         initData();
+        history();
+    }
+    ArrayList<String[]> hist = new ArrayList<>();
+    String[] toGet = {"time","message"};
+    void history(){
+        SQLiteJava.SQLiteRSLogs("select * from product_log where product_id = "+productID, hist, toGet);
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
+        for (String[] his : hist){
+            model.addRow(his);
+        }
+        revalidate();
+        repaint();
     }
     String[] datatoGet = {"name", "categName", "price", "brand", "min_stock", "retName"};
     private void initData(){
@@ -353,7 +368,8 @@ public class DetailsPanel extends javax.swing.JPanel {
         jTable2.setShowGrid(true);
         jScrollPane2.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(0).setMinWidth(110);
+            jTable2.getColumnModel().getColumn(0).setMaxWidth(110);
             jTable2.getColumnModel().getColumn(1).setResizable(false);
         }
 
@@ -561,6 +577,9 @@ public class DetailsPanel extends javax.swing.JPanel {
             dataIn[3] = dataIn[3].equals("0") || dataIn[3].isBlank() ? null : dataIn[3];
             String[] moredetailsIn = {dataIn[4], dataIn[5], dataIn[6]};
             
+            SQLiteJava.SQLiteLog("Updated product (ID: "+productID+") with new data\n\t"+Arrays.toString(dataIn), "Modify Product Details");
+            SQLiteJava.LogProduct(productID+"", "New Details: "+Arrays.toString(dataIn));
+            
             SQLiteJava.SQLitePrepare("update products set name = ?, amount = ?, min_stock = ?, price = ? where id = "
                     + productID, productsIn);
             SQLiteJava.SQLitePrepare("Update products_details set brand = ?, category = ?, retailer = ? where"
@@ -579,7 +598,7 @@ public class DetailsPanel extends javax.swing.JPanel {
                     System.out.println("Error copying and converting image: " + e.getMessage());
                 }
             }
-
+            
             JOptionPane.showMessageDialog(this, dataIn[0] + " has been successfully updated!",
                     "", JOptionPane.INFORMATION_MESSAGE);
         }

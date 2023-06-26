@@ -12,28 +12,30 @@ public class MainJFrame extends javax.swing.JFrame {
         nameTitleLabel.setText(accDetails.name);
         typeuserLabel.setText(accDetails.admin ? "Admin" : "Employee");
         accountsTab.setEnabled(accDetails.admin);
-        setProfileImage();
+        //setProfileImage();
 
-        //setButtons();
+        setButtons();
        
-        CardSwitch(productsTab, new ProductsPanel());
+        CardSwitch(homeTab, new HomePanel());
     }
     private void setProfileImage(){
         if(new java.io.File("src/img/account/"+accDetails.accnumber+".jpg").exists()){
-            imageTemplate3.setIcon(new javax.swing.ImageIcon("src/img/account/"+accDetails.accnumber+".jpg"));
+            //imageTemplate3.setIcon(new javax.swing.ImageIcon("src/img/account/"+accDetails.accnumber+".jpg"));
         }
     }
-    void setButtons(){
+    private void setButtons(){
         if(accDetails.admin){
             buttonsPanel.remove(cartTab);
         }else{
             buttonsPanel.removeAll();
+            buttonsPanel.add(homeTab);
             buttonsPanel.add(cartTab);
+            buttonsPanel.add(aboutTab);
             
         }
     }
     private void CardSwitch(javax.swing.JButton button, javax.swing.JPanel panel){
-        javax.swing.JButton[] tabs = {productsTab, accountsTab, cart1Tab, cart2Tab, cartTab, homeTab};
+        javax.swing.JButton[] tabs = {productsTab, accountsTab, cart1Tab, cart2Tab, cartTab, homeTab, aboutTab, logsTab};
         for (javax.swing.JButton i : tabs){
             if (i == button){
                 i.setBackground(Color.GRAY);
@@ -56,13 +58,14 @@ public class MainJFrame extends javax.swing.JFrame {
         gradientBG1 = new gradientBG();
         jButton1 = new javax.swing.JButton();
         buttonsPanel = new javax.swing.JPanel();
+        homeTab = new javax.swing.JButton();
         productsTab = new javax.swing.JButton();
         accountsTab = new javax.swing.JButton();
         cart1Tab = new javax.swing.JButton();
         cart2Tab = new javax.swing.JButton();
         logsTab = new javax.swing.JButton();
         cartTab = new javax.swing.JButton();
-        homeTab = new javax.swing.JButton();
+        aboutTab = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         imageTemplate1 = new ImageTemplate();
         CardPanel = new javax.swing.JPanel();
@@ -70,7 +73,6 @@ public class MainJFrame extends javax.swing.JFrame {
         imageTemplate2 = new ImageTemplate();
         nameTitleLabel = new javax.swing.JLabel();
         typeuserLabel = new javax.swing.JLabel();
-        imageTemplate3 = new ImageTemplate();
         jPanel1 = new javax.swing.JPanel();
         minExit = new ImageTemplate();
         minExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -105,6 +107,16 @@ public class MainJFrame extends javax.swing.JFrame {
 
         buttonsPanel.setOpaque(false);
         buttonsPanel.setLayout(new java.awt.GridLayout(8, 1, 30, 14));
+
+        homeTab.setText("Home");
+        homeTab.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        homeTab.setFocusable(false);
+        homeTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeTabActionPerformed(evt);
+            }
+        });
+        buttonsPanel.add(homeTab);
 
         productsTab.setText("Products");
         productsTab.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -147,7 +159,13 @@ public class MainJFrame extends javax.swing.JFrame {
         buttonsPanel.add(cart2Tab);
 
         logsTab.setText("Logs");
+        logsTab.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logsTab.setFocusable(false);
+        logsTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logsTabActionPerformed(evt);
+            }
+        });
         buttonsPanel.add(logsTab);
 
         cartTab.setText("Cart");
@@ -160,14 +178,15 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         buttonsPanel.add(cartTab);
 
-        homeTab.setText("Home");
-        homeTab.setFocusable(false);
-        homeTab.addActionListener(new java.awt.event.ActionListener() {
+        aboutTab.setText("About");
+        aboutTab.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        aboutTab.setFocusable(false);
+        aboutTab.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeTabActionPerformed(evt);
+                aboutTabActionPerformed(evt);
             }
         });
-        buttonsPanel.add(homeTab);
+        buttonsPanel.add(aboutTab);
 
         jPanel2.setOpaque(false);
 
@@ -211,7 +230,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(gradientBG1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
+                .addGap(84, 84, 84)
                 .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -240,10 +259,8 @@ public class MainJFrame extends javax.swing.JFrame {
         nameTitleLabel.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
         nameTitleLabel.setText("Salles, Francis James E.");
 
-        typeuserLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        typeuserLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         typeuserLabel.setText("Admin");
-
-        imageTemplate3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/defprof.jpg"))); // NOI18N
 
         jPanel1.setOpaque(false);
 
@@ -327,9 +344,7 @@ public class MainJFrame extends javax.swing.JFrame {
         imageTemplate2Layout.setHorizontalGroup(
             imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageTemplate2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(imageTemplate3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(16, 16, 16)
                 .addGroup(imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nameTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(typeuserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -339,7 +354,6 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         imageTemplate2Layout.setVerticalGroup(
             imageTemplate2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imageTemplate3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(imageTemplate2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nameTitleLabel)
@@ -396,6 +410,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 "Log Out?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, null, -1);
         if(response == JOptionPane.YES_OPTION){
+            SQLiteJava.SQLiteLog(accDetails.username + " (ID: "+ accDetails.accnumber+") logged out", "Logged Account");
             dispose();
             new LogIn().setVisible(true);
         }
@@ -430,6 +445,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_minMouseEntered
 
     private void minExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minExitMouseClicked
+        SQLiteJava.SQLiteLog(accDetails.username + " (ID: "+ accDetails.accnumber+") logged out", "Logged Account");
         dispose();
     }//GEN-LAST:event_minExitMouseClicked
 
@@ -456,6 +472,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private void homeTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeTabActionPerformed
         CardSwitch(homeTab, new HomePanel());
     }//GEN-LAST:event_homeTabActionPerformed
+
+    private void aboutTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutTabActionPerformed
+        CardSwitch(aboutTab, new aboutPanelMain());
+    }//GEN-LAST:event_aboutTabActionPerformed
+
+    private void logsTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logsTabActionPerformed
+        CardSwitch(logsTab, new LogsPanel());
+    }//GEN-LAST:event_logsTabActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -485,6 +509,7 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CardPanel;
     private javax.swing.JPanel Panel_1;
+    private javax.swing.JButton aboutTab;
     private javax.swing.JButton accountsTab;
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cart1Tab;
@@ -494,7 +519,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton homeTab;
     private ImageTemplate imageTemplate1;
     private ImageTemplate imageTemplate2;
-    private ImageTemplate imageTemplate3;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

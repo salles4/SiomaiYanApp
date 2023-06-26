@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 public class EmployeePanel extends javax.swing.JPanel {
@@ -7,10 +8,32 @@ public class EmployeePanel extends javax.swing.JPanel {
     final int CARTASSIGNED;
     public EmployeePanel() {
         initComponents();
-        CARTASSIGNED = 1;
+        CARTASSIGNED = Integer.parseInt(SQLiteJava.SQLiteSelect("select cart from accounts where id = '"+accDetails.accnumber+"'"));
         initData();
         setScrollSpeed();
-        
+        setCartAssigned();
+    }
+    private void setCartAssigned(){
+        switch (CARTASSIGNED){
+            case 0 -> {
+                CartLabel.setText("No Assigned Cart");
+                plateLabel.setText("You are not assigned to any cart yet.");
+                productsNumLabel.setText("Mistake? Let the admin know.");
+                cartImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cart/puzzle (1).png")));
+            }
+            case 1 -> {
+                CartLabel.setText("Food Cart #1");
+                plateLabel.setText("Plate Number: 810DYB");
+                productsNumLabel.setText("Products Assigned: "+SQLiteJava.SQLiteSelect("select count(*) from carts where cart = 1"));
+                cartImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cart/cart1.jpg")));
+            }
+            case 2 -> {
+                CartLabel.setText("Food Cart #2");
+                plateLabel.setText("Registered: 1303-0882991");
+                productsNumLabel.setText("Products Assigned: "+SQLiteJava.SQLiteSelect("select count(*) from carts where cart = 2"));
+                cartImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cart/cart2.jpg")));
+            }
+        }
     }
     ArrayList<String[]> productsList = new ArrayList<>();
     final String[] dataToGet = {"name",  "amount", "sold", "return", "product_id"};
@@ -60,10 +83,10 @@ public class EmployeePanel extends javax.swing.JPanel {
         imageTemplate1 = new ImageTemplate();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        imageTemplateNoSclr1 = new ImageTemplateNoSclr();
+        CartLabel = new javax.swing.JLabel();
+        plateLabel = new javax.swing.JLabel();
+        productsNumLabel = new javax.swing.JLabel();
+        cartImage = new ImageTemplateNoSclr();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         searchField = new javax.swing.JTextField();
@@ -127,16 +150,16 @@ public class EmployeePanel extends javax.swing.JPanel {
 
         jLabel6.setText("Assigned Cart:");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel7.setText("Food Cart 1");
+        CartLabel.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        CartLabel.setText("Food Cart 1");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Plate Number: 810DYB");
+        plateLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        plateLabel.setText("Plate Number: 810DYB");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setText("Products Assigned: 13");
+        productsNumLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        productsNumLabel.setText("Products Assigned: 13");
 
-        imageTemplateNoSclr1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cart/cart1.jpg"))); // NOI18N
+        cartImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cart/puzzle (1).png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -147,12 +170,12 @@ public class EmployeePanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(imageTemplateNoSclr1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cartImage, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))))
+                            .addComponent(CartLabel)
+                            .addComponent(plateLabel)
+                            .addComponent(productsNumLabel))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -163,14 +186,14 @@ public class EmployeePanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(jLabel7)
+                        .addComponent(CartLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8)
+                        .addComponent(plateLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9))
+                        .addComponent(productsNumLabel))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(imageTemplateNoSclr1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cartImage, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -203,8 +226,18 @@ public class EmployeePanel extends javax.swing.JPanel {
         });
 
         jButton1.setText("Guide");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Print");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -218,19 +251,18 @@ public class EmployeePanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(searchField))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,11 +276,11 @@ public class EmployeePanel extends javax.swing.JPanel {
                     .addComponent(jLabel11)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(38, 38, 38))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -269,7 +301,7 @@ public class EmployeePanel extends javax.swing.JPanel {
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
@@ -279,7 +311,7 @@ public class EmployeePanel extends javax.swing.JPanel {
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(38, 38, 38)
                         .addComponent(jLabel3)
@@ -324,11 +356,37 @@ public class EmployeePanel extends javax.swing.JPanel {
         initData();
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(this, """
+                                            Before or when you return the food cart, you need to count how much products you sold or products that remain in the cart and input it here in the application.
+                                            
+                                            The Assinged to Cart column shows how much of each product is assigned to your cart. You are not able to change the value of it since it is the amount of product assigned to you by the admin.
+                                            
+                                            The Sold column displays how much of this product you used or sold during your shift.
+                                            
+                                            The Returning column represents how much of the product remains in your cart and to be returned to our inventory.
+                                            
+                                            -------------------------------------------------------------------------
+                                            
+                                            Clicking a product shows a pop up where you can put the following:
+                                            
+                                            In Sold Amount, you need to count how much of the given product you used or sold.
+                                            In Remaining Amount, you need to count how much of the said product is in your assigned cart.
+                                            
+                                            Note that it automatically calculate your input and if does not match with the amount assigned to you, you need to pay for the missing amount.
+                                             """, "Guide", JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JOptionPane.showMessageDialog(cartImage, new ConfirmSoldPanel(CARTASSIGNED, accDetails.name, SQLiteJava.SQLiteSelect("select contact from accounts where id = '"+accDetails.accnumber+"'")));
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CartLabel;
     private javax.swing.JPanel EmployeeListScrollPanel;
+    private ImageTemplateNoSclr cartImage;
     private ImageTemplate imageTemplate1;
-    private ImageTemplateNoSclr imageTemplateNoSclr1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -343,13 +401,12 @@ public class EmployeePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel plateLabel;
+    private javax.swing.JLabel productsNumLabel;
     private javax.swing.JTextField searchField;
     // End of variables declaration//GEN-END:variables
 }

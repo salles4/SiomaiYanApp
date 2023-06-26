@@ -110,7 +110,7 @@ public class CartItemsPanel extends javax.swing.JPanel {
         }
         //makes inputted amount to int
         String amount = cartInput.AmountTextField.getText();
-        
+        if (amount.equals("")) return;
         //loop through unsaved products to change amount
         for (String[] i : cartPanel.unsavedArray) {
             if (i[0].equals(String.valueOf(id))) {
@@ -138,7 +138,7 @@ public class CartItemsPanel extends javax.swing.JPanel {
             return;
         }
         String amount = cartInput.AmountTextField.getText() ;
-
+        if (amount.equals("")) return;
         for (String[] i : cartPanel.unsavedArray) {
             if (i[0].equals(String.valueOf(id))) {
                 i[2] = "-"+amount;

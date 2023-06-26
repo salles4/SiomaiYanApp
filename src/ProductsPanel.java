@@ -1,12 +1,20 @@
 
 import java.awt.image.BufferedImage;
+import java.awt.print.*;
+import java.awt.Graphics2D;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -49,22 +57,19 @@ public class ProductsPanel extends javax.swing.JPanel {
         if (categFilter != -1) {
             if (!searchText.isEmpty()) {
                 SQLiteJava.SQLiteRS("SELECT p.*, d.category FROM products p JOIN products_details d ON p.id = d.product_id "
-                        + "WHERE category = "+categFilter+" and (LOWER(name) LIKE '" + searchText + "%' OR "
+                        + "WHERE category = " + categFilter + " and (LOWER(name) LIKE '" + searchText + "%' OR "
                         + "LOWER(name) LIKE '%" + searchText + "%') ORDER BY CASE WHEN LOWER(name) LIKE '"
                         + searchText + "%' THEN 0 ELSE 1 END, " + SORTSTRINGS[SortedBy] + " " + ORDER[ascDesc], this);
-            } 
-            else {
+            } else {
                 SQLiteJava.SQLiteRS("select p.*, d.category FROM products p JOIN products_details d ON p.id = d.product_id "
-                        + "WHERE category = "+categFilter+" order by " + SORTSTRINGS[SortedBy] + " " + ORDER[ascDesc], this);
+                        + "WHERE category = " + categFilter + " order by " + SORTSTRINGS[SortedBy] + " " + ORDER[ascDesc], this);
             }
-        } 
-        else {
+        } else {
             if (!searchText.isEmpty()) {
                 SQLiteJava.SQLiteRS("SELECT * FROM products WHERE LOWER(name) LIKE '" + searchText + "%' OR "
                         + "LOWER(name) LIKE '%" + searchText + "%' ORDER BY CASE WHEN LOWER(name) LIKE '"
                         + searchText + "%' THEN 0 ELSE 1 END, " + SORTSTRINGS[SortedBy] + " " + ORDER[ascDesc], this);
-            } 
-            else {
+            } else {
                 SQLiteJava.SQLiteRS("select * from products order by " + SORTSTRINGS[SortedBy] + " " + ORDER[ascDesc], this);
             }
         }
@@ -114,13 +119,20 @@ public class ProductsPanel extends javax.swing.JPanel {
             String[] productsIn = {dataIn[0], dataIn[1], dataIn[2], dataIn[3]};
             dataIn[3] = dataIn[3].equals("0") || dataIn[3].isBlank() ? null : dataIn[3];
             String[] moredetailsIn = {dataIn[4], dataIn[5], dataIn[6]};
-
+            
+            
+            
             SQLiteJava.SQLitePrepare("insert into products (name,amount,min_stock,price) "
                     + "values (?,?,?,?)", productsIn);
             SQLiteJava.SQLitePrepare("insert into products_details (product_id,brand,category,retailer)"
                     + "values ((select id from products order by id desc limit 1),?,?,?) ", moredetailsIn);
             SQLiteJava.SQLite("update products set price = null where price = 0 or price = ''");
-
+            
+            String productID = SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1");
+            
+            SQLiteJava.SQLiteLog("Added "+data[0]+" (ID: "+productID+") to database with these data:\n\t"+Arrays.toString(dataIn), "Add Product");
+            SQLiteJava.LogProduct(productID+"", "Created Product with this details: \n"+Arrays.toString(dataIn));
+            
             if (!addProd.selectedImagePath.equals("/img/defIMG.png")) {
                 File READfile = new File(addProd.selectedImagePath);
                 File destinationFile = new File("src/img/product_img/" + SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1") + ".jpg");
@@ -155,6 +167,7 @@ public class ProductsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton3 = new javax.swing.JButton();
         ScrollPane = new javax.swing.JScrollPane();
         ScrollPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -167,10 +180,12 @@ public class ProductsPanel extends javax.swing.JPanel {
         textSearchField = new javax.swing.JTextField();
         imageTemplate1 = new ImageTemplate();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jComboBox3 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+
+        jButton3.setText("Retailers");
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1039, 512));
@@ -225,9 +240,12 @@ public class ProductsPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setText("Retailers");
-
         jButton4.setText("Print");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
@@ -238,18 +256,17 @@ public class ProductsPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Category:");
 
+        jButton5.setText("CSV");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,6 +290,14 @@ public class ProductsPanel extends javax.swing.JPanel {
                                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,9 +323,9 @@ public class ProductsPanel extends javax.swing.JPanel {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
                 .addGap(49, 49, 49))
         );
@@ -361,6 +386,68 @@ public class ProductsPanel extends javax.swing.JPanel {
         ListProducts();
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        printPv pv = new printPv();
+
+        JOptionPane.showOptionDialog(this, pv, "Print",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, null, -1);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select Destination Folder");
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int result = fileChooser.showSaveDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String selectedFolderPath = fileChooser.getSelectedFile().getAbsolutePath();
+            String csvFilePath = selectedFolderPath + "\\table_data.csv";
+            try {
+                writeTableToCsv(new printPv().jTable1, csvFilePath, true);
+                JOptionPane.showMessageDialog(this, "CSV saved successfully at\n"+csvFilePath);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Error while saving CSV\n"+ex.getMessage(),"ERROR",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+    private void writeTableToCsv(JTable table, String filePath, boolean includeHeaders) throws IOException {
+        TableModel model = table.getModel();
+        int rowCount = model.getRowCount();
+        int columnCount = model.getColumnCount();
+
+        try (FileWriter writer = new FileWriter(filePath)) {
+            if (includeHeaders) {
+                for (int col = 0; col < columnCount; col++) {
+                    writer.append(escapeSpecialCharacters(model.getColumnName(col)));
+                    if (col < columnCount - 1) {
+                        writer.append(',');
+                    }
+                }
+                writer.append('\n');
+            }
+
+            for (int row = 0; row < rowCount; row++) {
+                for (int col = 0; col < columnCount; col++) {
+                    Object value = model.getValueAt(row, col);
+                    writer.append(escapeSpecialCharacters(value != null ? value.toString() : ""));
+                    if (col < columnCount - 1) {
+                        writer.append(',');
+                    }
+                }
+                writer.append('\n');
+            }
+        }
+    }
+
+    // Helper method to escape special characters in CSV values
+    private String escapeSpecialCharacters(String value) {
+        if (value.contains(",") || value.contains("\"") || value.contains("'")) {
+            value = value.replace("\"", "\"\"");
+            value = "\"" + value + "\"";
+        }
+        return value;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPane;
@@ -370,6 +457,7 @@ public class ProductsPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;

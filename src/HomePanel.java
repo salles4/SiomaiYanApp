@@ -1,6 +1,9 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Random;
 import javax.swing.Timer;
 
 /*
@@ -19,6 +22,9 @@ public class HomePanel extends javax.swing.JPanel {
      */
     public HomePanel() {
         initComponents();
+        Random rm = new Random();
+        toDisplayedIndex = rm.nextInt(3);
+        imageTemplateforHome2.setIcon(new javax.swing.ImageIcon(getClass().getResource(imagePaths[toDisplayedIndex])));
         nextTimer.start();
     }
    
@@ -37,18 +43,37 @@ public class HomePanel extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jButton1.setText("<");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusable(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         imageTemplateforHome2.setAlphaValue(1.0F);
-        imageTemplateforHome2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
+        imageTemplateforHome2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/webAdEdited.png"))); // NOI18N
+        imageTemplateforHome2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                imageTemplateforHome2MousePressed(evt);
+            }
+        });
         jPanel1.add(imageTemplateforHome2);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jButton2.setText(">");
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setFocusable(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -58,53 +83,90 @@ public class HomePanel extends javax.swing.JPanel {
                 .addGap(6, 6, 6)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 234, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(213, 213, 213))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addGap(218, 218, 218))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(213, 213, 213))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(216, 216, 216))))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void setButtons(boolean enable){
+        jButton1.setEnabled(enable);
+        jButton2.setEnabled(enable);
+    }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        alphaTimer.stop();
+        nextTimer.stop();
+        toDisplayedIndex = (toDisplayedIndex + 1) % imagePaths.length;
+        alphaTimer.start();
+        nextTimer.start();
+        setButtons(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        alphaTimer.stop();
+        nextTimer.stop();
+        toDisplayedIndex = (toDisplayedIndex - 1 + imagePaths.length) % imagePaths.length;
+        alphaTimer.start();
+        nextTimer.start();
+        setButtons(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void imageTemplateforHome2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageTemplateforHome2MousePressed
+        if(toDisplayedIndex == 0){
+            String url = "https://salles4.github.io/SiomaiYan/";
+        try {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+            desktop.browse(new java.net.URI(url));
+        } catch (IOException | URISyntaxException e) {
+        }
+        }
+    }//GEN-LAST:event_imageTemplateforHome2MousePressed
     
     int toDisplayedIndex = 0;
-    String[] imagePaths = {"/img/logo_duced.png", "/img/siomai_login25.jpg", "/img/topPanel25.jpg"};
+    String[] imagePaths = {"/img/webAdEdited.png", "/img/mainAd.png", "/img/SystemAdEdited.png"};
     @SuppressWarnings("Convert2Lambda")
     Timer nextTimer = new Timer(6000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             toDisplayedIndex = (toDisplayedIndex + 1) % imagePaths.length;
             alphaTimer.start();
+            setButtons(false);
         }
     });
     
@@ -127,6 +189,7 @@ public class HomePanel extends javax.swing.JPanel {
                 alphaValue = 1;
                 incrementAlpha = -0.07f;
                 alphaTimer.stop();
+                setButtons(true);
             }
                 
             

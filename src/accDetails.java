@@ -1,7 +1,7 @@
 
 public class accDetails {
-    public static String username = "asdasas";
+    public static String username = "sallesfe";
     public static String name = "Salles, Francis James E.";
-    public static String accnumber = "2022 - ";
-    public static boolean admin = false;
+    public static String accnumber = "2023 - admin";
+    public static boolean admin = true;
 }

@@ -39,9 +39,12 @@ public class LogIn extends javax.swing.JFrame {
         if (user.equals("sallesfe") && pass.equals("qwerty123")) { // checks if admin
             JOptionPane.showMessageDialog(this, "Log In Successful");
             accDetails.username = user;
+            accDetails.name = "Salles, Francis James E.";
+            accDetails.accnumber = "2023 - admin";
             accDetails.admin = true;
             jProgressBar1.setVisible(true);
             timer.start();
+            SQLiteJava.SQLiteLog(accDetails.username + " (ID: "+ accDetails.accnumber+") logged in", "Logged Account");
             return;
         }
         if (SQLiteJava.SQLiteLogIn(user, pass)) { // checks database
@@ -76,6 +79,7 @@ public class LogIn extends javax.swing.JFrame {
                 jProgressBar1.setValue(n);
             } else {
                 timer.stop();
+                attempts = 3;
                 jProgressBar1.setVisible(false);
                 jProgressBar1.setValue(0);
                 jProgressBar1.setString("Done!");
@@ -109,6 +113,7 @@ public class LogIn extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Log In");
@@ -161,9 +166,9 @@ public class LogIn extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(passF, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(userF))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(userF, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                            .addComponent(passF))))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,6 +233,17 @@ public class LogIn extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/view.png"))); // NOI18N
+        jToggleButton1.setContentAreaFilled(false);
+        jToggleButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jToggleButton1.setFocusable(false);
+        jToggleButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hide.png"))); // NOI18N
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout gradientBG2Layout = new javax.swing.GroupLayout(gradientBG2);
         gradientBG2.setLayout(gradientBG2Layout);
         gradientBG2Layout.setHorizontalGroup(
@@ -241,16 +257,24 @@ public class LogIn extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(49, Short.MAX_VALUE))
+                            .addGroup(gradientBG2Layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jToggleButton1)))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         gradientBG2Layout.setVerticalGroup(
             gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBG2Layout.createSequentialGroup()
                 .addGap(89, 89, 89)
                 .addComponent(imageTemplate1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gradientBG2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gradientBG2Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jToggleButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -262,7 +286,7 @@ public class LogIn extends javax.swing.JFrame {
             imageTemplateNoSclr1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageTemplateNoSclr1Layout.createSequentialGroup()
                 .addComponent(gradientBG2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 621, Short.MAX_VALUE))
+                .addGap(0, 615, Short.MAX_VALUE))
         );
         imageTemplateNoSclr1Layout.setVerticalGroup(
             imageTemplateNoSclr1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,6 +338,11 @@ public class LogIn extends javax.swing.JFrame {
         jLabel3.setText("<html><p style=\"text-align: center;\">Version 1.0.0<br>Having a problem? "
                 + "<span style=\"color: blue;\">Contact Admin</span></p></html>");
     }//GEN-LAST:event_jLabel3MouseExited
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        char echoChar = jToggleButton1.isSelected() ? '\0' : '\u2022';
+        passF.setEchoChar(echoChar);
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,6 +398,7 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton login;
     private javax.swing.JPasswordField passF;
     private javax.swing.JTextField userF;

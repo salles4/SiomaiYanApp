@@ -1,6 +1,7 @@
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -77,6 +78,29 @@ public class SQLiteJava {
             showError(e);
         }
     }
+    public static void SQLiteRSLogs(String command, ArrayList AccountArray, String[] dataToGet) {
+        AccountArray.clear();
+        try (Statement statement = conn.createStatement()) {
+            ResultSet rs = statement.executeQuery(command);
+            if (rs.next()) {
+                do {
+                    String[] row = new String[dataToGet.length];
+                    for (int i = 0; i < dataToGet.length; i++) {
+                        row[i] = rs.getString(dataToGet[i].replace("\\n", System.lineSeparator()));
+                        
+                    }
+
+                    AccountArray.add(row);
+                } while (rs.next());
+            } else {
+                System.out.println("Empty Data");
+            }
+            System.out.println("Data Listed.");
+        } catch (SQLException e) {
+            showError(e);
+        }
+    }
+    
 
     //adds data from database to the given arrayList
     public static void SQLiteRS(String command, String[] DatatoArray, String[] dataToGet) {
@@ -128,6 +152,24 @@ public class SQLiteJava {
             showError(e);
         }
         return "null";
+    }
+        public static String SQLiteSelect0Null(String command) {
+        try (Statement statement = conn.createStatement()) {
+            ResultSet rs = statement.executeQuery(command);
+            if (rs.next()) {
+                String n = rs.getString(1);
+                System.out.println(n);
+                if (n == null || n.equals("null")){
+                    return "0";
+                }else{
+                    return n;
+                }
+                
+            }
+        } catch (SQLException e) {
+            showError(e);
+        }
+        return "0";
     }
 
     /**
@@ -255,6 +297,7 @@ public class SQLiteJava {
                 accDetails.name = rs.getString("name");
                 int admin = rs.getInt("admin");
                 accDetails.admin = (admin != 0);
+                SQLiteLog(accDetails.username + " (ID: "+ accDetails.accnumber+") logged in", "Logged Account");
                 return true;
             }
         } catch (SQLException ex) {
@@ -263,14 +306,29 @@ public class SQLiteJava {
         return false;
     }
 
-    int GenerateIDforLogs() {
-        int randomNums = new java.util.Random().nextInt(10000, 99999);
+    public static int GenerateIDforLogs() {
+        int randomNums = new java.util.Random().nextInt(100000000, 999999999);
         if (SQLiteCheckIfInDatabase("select id from logs where id = ?", randomNums + "")) {
             randomNums = GenerateIDforLogs();
         }
         return randomNums;
     }
-
+     public static void SQLiteLog(String message, String action) {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("insert into logs (id,log,action) values ("+GenerateIDforLogs()+",'"+message+"','"+action+"')");
+        } catch (SQLException e) {
+            showError(e);
+        }
+    }
+     public static String SqLiteLogGetLastID(){
+         return SQLiteSelect("select id from logs order by time desc limit 1");
+     }
+     public static void LogDisplay(String log){
+         JOptionPane.showMessageDialog(null, "Successful!! \n\n"+log + "\nReference Number: "+SqLiteLogGetLastID(), "Log", JOptionPane.PLAIN_MESSAGE);
+     }
+    public static void LogProduct(String productID, String log){
+        SQLite("insert into product_log (product_id, id, message) values ("+productID+","+GenerateIDforLogs()+",'"+log+"')");
+    }
     //displays joptionpane for catching error
     private static void showError(SQLException e) {
         JOptionPane.showMessageDialog(null, e.getLocalizedMessage()+"\n"+e.getMessage(), "DATABASE ERROR", JOptionPane.ERROR_MESSAGE);

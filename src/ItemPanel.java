@@ -38,7 +38,7 @@ public class ItemPanel extends javax.swing.JPanel {
        
     }
     private void setBG(){
-        if(stock < warn){ //2 <20
+        if(stock <= warn){ //2 <20
             gradientBG.changeColor(new Color(0xff5555));
             stockLabel.setForeground(Color.red);
             stockLabel.setFont(new java.awt.Font(stockLabel.getFont().getFontName(), java.awt.Font.BOLD, stockLabel.getFont().getSize()));

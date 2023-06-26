@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 public class ScrollPanelLabel extends javax.swing.JPanel {
 
     CartPanel cartPanel;
@@ -7,6 +10,7 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
     public ScrollPanelLabel(CartPanel panel) {
         initComponents();
         this.cartPanel = panel;
+        log = "Moved from/to the Cart #"+cartPanel.CARTNUMBER+":\n";
     }
 
     @SuppressWarnings("unchecked")
@@ -84,12 +88,16 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
         cartPanel.unsavedArray.clear();
         cartPanel.ListData();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    String log;
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         for (String[] unsavedProduct : cartPanel.unsavedArray){ // id of product, name of product, amount in array
+            
             int unsavedAmount = Integer.parseInt(unsavedProduct[2]);
             if (unsavedAmount != 0){
                 SQLiteJava.SQLite("update products set amount = amount - "+unsavedAmount+" where id = " + unsavedProduct[0]);
+                
+                log = log +"\t"+ unsavedProduct[1]+" (ID:"+unsavedProduct[0]+") in "+"cart is adjusted by: "+unsavedAmount+"\n";
+                SQLiteJava.LogProduct(unsavedProduct[0],"Adjusted in cart #"+cartPanel.CARTNUMBER+" supply by "+unsavedAmount);
                 
                 int updated = SQLiteJava.SQLiteExeUpdate("update carts set amount = amount + "+unsavedAmount+
                         " where cart = "+cartPanel.CARTNUMBER+" and product_id = " + unsavedProduct[0]);
@@ -100,6 +108,8 @@ public class ScrollPanelLabel extends javax.swing.JPanel {
                 }
             }
         }
+        SQLiteJava.SQLiteLog(log, "Cart Supply");
+        SQLiteJava.LogDisplay(log);
         SQLiteJava.SQLite("delete from carts where amount = 0");
         cartPanel.unsavedArray.clear();
         cartPanel.syncDataToList();
