@@ -130,7 +130,7 @@ public class ProductsPanel extends javax.swing.JPanel {
             
             String productID = SQLiteJava.SQLiteSelect("select id from products order by id desc limit 1");
             
-            SQLiteJava.SQLiteLog("Added "+data[0]+" (ID: "+productID+") to database with these data:\n\t"+Arrays.toString(dataIn), "Add Product");
+            SQLiteJava.SQLiteLog("Added "+dataIn[0]+" (ID: "+productID+") to database with these data:\n\t"+Arrays.toString(dataIn), "Add Product");
             SQLiteJava.LogProduct(productID+"", "Created Product with this details: \n"+Arrays.toString(dataIn));
             
             if (!addProd.selectedImagePath.equals("/img/defIMG.png")) {

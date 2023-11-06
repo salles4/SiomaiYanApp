@@ -161,7 +161,7 @@ public class HomePanel extends javax.swing.JPanel {
     int toDisplayedIndex = 0;
     String[] imagePaths = {"/img/webAdEdited.png", "/img/mainAd.png", "/img/SystemAdEdited.png"};
     @SuppressWarnings("Convert2Lambda")
-    Timer nextTimer = new Timer(6000, new ActionListener() {
+    Timer nextTimer = new Timer(7000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             toDisplayedIndex = (toDisplayedIndex + 1) % imagePaths.length;
